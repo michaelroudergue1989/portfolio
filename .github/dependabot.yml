@@ -1,0 +1,30 @@
+# Actualizaciones automáticas (solo propuestas mediante pull request; no se aplican solas).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      desarrollo:
+        dependency-type: development
+        update-types: [minor, patch]
+      produccion:
+        dependency-type: production
+        update-types: [minor, patch]
+    ignore:
+      # typescript-eslint declara typescript < 6.1.0 (ver docs/ARQUITECTURA.md).
+      - dependency-name: typescript
+        versions: ['>=6.1.0']
+      # eslint-plugin-jsx-a11y solo soporta hasta ESLint 9.
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@eslint/js'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3

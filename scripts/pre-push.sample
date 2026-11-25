@@ -1,0 +1,20 @@
+#!/bin/sh
+# Hook de ejemplo (NO se instala solo). Copiar a .git/hooks/pre-push (ver docs/PUBLICACION.md, 5.4).
+# Solo permite publicar la rama "publicar" como "main" del remoto y exige que pase el verificador.
+# Bloquea: --all, --mirror, etiquetas, borrados, otras ramas y referencias auxiliares.
+
+ALLOWED_LOCAL="refs/heads/publicar"
+ALLOWED_REMOTE="refs/heads/main"
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$local_ref" != "$ALLOWED_LOCAL" ] || [ "$remote_ref" != "$ALLOWED_REMOTE" ]; then
+    echo "pre-push: bloqueado ($local_ref -> $remote_ref). Solo se permite $ALLOWED_LOCAL -> $ALLOWED_REMOTE." >&2
+    exit 1
+  fi
+done
+
+if ! node scripts/check-public-branch.mjs publicar >/dev/null 2>&1; then
+  echo "pre-push: la rama publicar NO es segura (ver: npm run verify:public-branch -- publicar)." >&2
+  exit 1
+fi
+exit 0

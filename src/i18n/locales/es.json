@@ -1,0 +1,340 @@
+{
+  "a11y": {
+    "skipToContent": "Saltar al contenido principal",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
+    "pdfFile": "(archivo PDF)"
+  },
+  "nav": {
+    "label": "Navegación principal",
+    "mobileLabel": "Menú de navegación",
+    "openMenu": "Abrir menú de navegación",
+    "closeMenu": "Cerrar menú de navegación",
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "projects": "Proyectos",
+    "skills": "Habilidades",
+    "education": "Formación",
+    "certifications": "Certificaciones",
+    "resumes": "Currículum",
+    "contact": "Contacto"
+  },
+  "theme": {
+    "switchToLight": "Cambiar a tema claro",
+    "switchToDark": "Cambiar a tema oscuro"
+  },
+  "language": {
+    "label": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "hero": {
+    "title": "Ingeniero en Informática",
+    "location": "Región de La Araucanía, Chile",
+    "lead": "Ingeniero en Informática con más de 9 años de experiencia profesional en análisis, diseño, desarrollo, implementación y mantenimiento de sistemas de información en instituciones de educación superior y salud.",
+    "body": "Experiencia en desarrollo Full Stack, liderazgo técnico, coordinación de proyectos TI, integración de sistemas, automatización de procesos y aseguramiento de calidad y seguridad de software.",
+    "closing": "Diplomado en Gestión y Dirección de Proyectos TI de Duoc UC y Diploma de Postítulo en Ciberseguridad de la Universidad de Chile, con una visión profesional que integra ingeniería de software, liderazgo tecnológico y seguridad de la información.",
+    "ctaExperience": "Ver experiencia",
+    "visualLabel": "Monograma MR",
+    "ctaDownload": "Descargar CV"
+  },
+  "stats": {
+    "label": "Indicadores profesionales",
+    "years": "Años de experiencia profesional",
+    "jobs": "Experiencias laborales",
+    "hours": "Horas de formación (diplomado y postítulo)",
+    "areas": "Áreas profesionales"
+  },
+  "about": {
+    "eyebrow": "Sobre mí",
+    "title": "Ingeniería, liderazgo y seguridad",
+    "p1": "Soy Ingeniero en Informática con más de 9 años de experiencia en análisis, desarrollo y mantenimiento de sistemas institucionales en educación superior y salud.",
+    "p2": "He trabajado en la coordinación técnica de desarrollos, el levantamiento de requerimientos, la implementación de soluciones de software, la integración de sistemas, las pruebas, la documentación técnica y el aseguramiento de calidad.",
+    "p3": "Me he formado en dirección de proyectos TI, Scrum, PMBOK, seguridad de la información, gestión de riesgos, SGSI, ISO/IEC 27001 y 27002, protección de datos personales y normativa chilena de ciberseguridad.",
+    "linesIntro": "Mi orientación profesional integra tres líneas:",
+    "factsTitle": "Datos profesionales",
+    "factName": "Nombre",
+    "factTitle": "Título",
+    "factLocation": "Ubicación"
+  },
+  "areas": {
+    "eyebrow": "Especialización",
+    "title": "Tres áreas de trabajo",
+    "description": "Un perfil que combina construcción de software, coordinación técnica y seguridad de la información.",
+    "experienceLabel": "Experiencia",
+    "trainingLabel": "Formación",
+    "software": {
+      "title": "Ingeniería de Software y Desarrollo Full Stack",
+      "shortTitle": "Ingeniería de Software y Desarrollo Full Stack",
+      "description": "Análisis, desarrollo y mantenimiento de sistemas institucionales.",
+      "experience": {
+        "fullStack": "Desarrollo Full Stack",
+        "requirements": "Análisis de requerimientos"
+      },
+      "training": {
+        "inacap": "Ingeniería en Informática, INACAP"
+      }
+    },
+    "leadership": {
+      "title": "Liderazgo Técnico y Gestión de Proyectos TI",
+      "shortTitle": "Liderazgo Técnico y Gestión de Proyectos TI",
+      "description": "Coordinación técnica de desarrollos y trabajo con metodologías ágiles.",
+      "experience": {
+        "coordination": "Coordinación técnica",
+        "techLead": "Tech Lead",
+        "agile": "Scrum"
+      },
+      "training": {
+        "diplomado": "Diplomado en Gestión y Dirección de Proyectos TI, Duoc UC"
+      }
+    },
+    "security": {
+      "title": "Ciberseguridad y Seguridad de la Información",
+      "shortTitle": "Ciberseguridad y Seguridad de la Información",
+      "description": "Calidad y seguridad de software, con formación especializada en ciberseguridad.",
+      "experience": {
+        "quality": "Calidad y seguridad de software"
+      },
+      "training": {
+        "postitulo": "Diploma de Postítulo en Ciberseguridad, Universidad de Chile",
+        "iso27001": "Curso ISO/IEC 27001 Lead Implementer"
+      }
+    }
+  },
+  "experience": {
+    "eyebrow": "Trayectoria",
+    "title": "Experiencia laboral",
+    "description": "Más de nueve años desarrollando y manteniendo sistemas de información en instituciones de educación superior y salud.",
+    "present": "Actualidad",
+    "responsibilitiesLabel": "Responsabilidades",
+    "technologiesLabel": "Tecnologías",
+    "uct": {
+      "role": "Analista / Desarrollador de Software",
+      "items": {
+        "1": "Análisis y levantamiento de requerimientos con unidades usuarias.",
+        "2": "Definición funcional, desarrollo, pruebas y documentación técnica y funcional.",
+        "3": "Participación y coordinación técnica de un sistema institucional de gestión de consentimientos.",
+        "4": "Desarrollo y mantenimiento de sistemas institucionales.",
+        "5": "Integraciones y automatizaciones mediante n8n.",
+        "6": "Aplicación de análisis estático de código con SonarQube.",
+        "7": "Controles complementarios de calidad y seguridad, con trazabilidad asociada al Sistema de Gestión de Calidad.",
+        "8": "Implementación de funcionalidades de accesibilidad mediante síntesis de voz."
+      }
+    },
+    "ufro": {
+      "unit": "Dirección de Vinculación con el Medio",
+      "role": "Desarrollador de Software / Coordinación Técnica de Desarrollos",
+      "items": {
+        "1": "Desarrollo autónomo de módulos y repositorios institucionales.",
+        "2": "Desarrollo de una plataforma institucional de vinculación con el medio.",
+        "3": "Sistemas de educación continua, vinculación con el medio, desarrollo estudiantil e internacionalización.",
+        "4": "Construcción de interfaces centralizadas de administración.",
+        "5": "Implementación de mantenedores, validadores, flujos de trabajo, gestión de eventos y generación de documentos.",
+        "6": "Coordinación técnica de actividades de desarrollo.",
+        "7": "Pruebas, documentación y capacitación de usuarios."
+      }
+    },
+    "lazos": {
+      "role": "Ingeniero de Desarrollo de Software",
+      "items": {
+        "1": "Desarrollo y mantenimiento de sistemas de abastecimiento, inventario, mantención vehicular y gestión de contratos.",
+        "2": "Análisis de requerimientos.",
+        "3": "Implementación de funcionalidades.",
+        "4": "Soporte y resolución de incidencias.",
+        "5": "Documentación técnica, instructivos, informes de avance, pruebas y capacitación."
+      }
+    },
+    "cram": {
+      "role": "Webmaster / Desarrollador Web",
+      "items": {
+        "1": "Administración y mantenimiento de comercio electrónico.",
+        "2": "Integración de Webpay Plus mediante servicios web.",
+        "3": "Gestión de respaldos.",
+        "4": "Administración de contenidos.",
+        "5": "Soporte técnico y atención de incidencias."
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Proyectos",
+    "title": "Proyectos profesionales",
+    "description": "Soluciones en las que he participado, descritas con denominaciones profesionales genéricas.",
+    "confidentialityNote": "Por confidencialidad institucional, los proyectos se describen con denominaciones genéricas y sin detalles internos.",
+    "technologiesLabel": "Tecnologías",
+    "consentManagement": {
+      "title": "Sistema institucional de gestión de consentimientos",
+      "description": "Participación y coordinación técnica en el desarrollo de un sistema institucional para gestionar consentimientos."
+    },
+    "communityEngagement": {
+      "title": "Plataforma institucional de vinculación con el medio",
+      "description": "Desarrollo de módulos de una plataforma institucional para la gestión de la vinculación con el medio, la educación continua, el desarrollo estudiantil y la internacionalización."
+    },
+    "systemsAdministration": {
+      "title": "Plataforma de administración de sistemas institucionales",
+      "description": "Desarrollo de interfaces centralizadas para seleccionar sistemas, consultar registros y realizar operaciones de administración."
+    },
+    "healthManagement": {
+      "title": "Soluciones de gestión administrativa del sector salud",
+      "description": "Desarrollo y mantenimiento de soluciones de abastecimiento, inventario, mantención vehicular y gestión de contratos."
+    },
+    "qualitySecurity": {
+      "title": "Aseguramiento de calidad y seguridad de aplicaciones",
+      "description": "Análisis estático de código con SonarQube y controles complementarios de revisión de calidad y seguridad."
+    },
+    "accessibility": {
+      "title": "Soluciones de accesibilidad web",
+      "description": "Funcionalidades de accesibilidad mediante síntesis de voz para usuarios con discapacidad visual."
+    },
+    "ecommerce": {
+      "title": "Desarrollo e integración de comercio electrónico",
+      "description": "Administración de una plataforma PrestaShop e integración de Webpay Plus."
+    }
+  },
+  "skills": {
+    "eyebrow": "Competencias",
+    "title": "Habilidades y tecnologías",
+    "description": "Habilidades principales y tecnologías con las que he trabajado, organizadas por categoría.",
+    "coreTitle": "Habilidades principales",
+    "coreNote": "Niveles de autoevaluación profesional, según mi perfil en Get on Board.",
+    "levels": {
+      "advanced": "Avanzado",
+      "intermediate": "Intermedio"
+    },
+    "complementaryTitle": "Tecnologías y competencias complementarias",
+    "educationBasis": "Competencia respaldada principalmente por formación académica",
+    "legend": "Marcadas con este símbolo: competencias respaldadas principalmente por formación académica.",
+    "groups": {
+      "languages": "Lenguajes y frameworks",
+      "databases": "Bases de datos",
+      "tooling": "Infraestructura y herramientas",
+      "projectManagement": "Gestión de proyectos",
+      "cybersecurity": "Ciberseguridad"
+    },
+    "names": {
+      "fullStack": "Full Stack",
+      "projectManagement": "Gestión de proyectos",
+      "cybersecurity": "Ciberseguridad",
+      "informationSecurity": "Seguridad de la información",
+      "technicalCoordination": "Coordinación técnica",
+      "requirements": "Levantamiento de requerimientos",
+      "technicalPlanning": "Planificación técnica",
+      "deliverables": "Seguimiento de entregables",
+      "documentation": "Documentación técnica y funcional",
+      "softwareSecurity": "Seguridad de software",
+      "staticAnalysis": "Análisis estático de código",
+      "riskManagement": "Gestión de riesgos",
+      "isms": "SGSI",
+      "dataProtection": "Protección de datos personales",
+      "law21663": "Ley 21.663",
+      "law21719": "Ley 21.719"
+    }
+  },
+  "education": {
+    "eyebrow": "Formación",
+    "title": "Formación académica",
+    "description": "Estudios de pregrado y postítulo en informática, gestión de proyectos y ciberseguridad.",
+    "hours": "{{hours}} horas",
+    "status": {
+      "approved": "Aprobado"
+    },
+    "items": {
+      "postitulo": {
+        "title": "Diploma de Postítulo en Ciberseguridad"
+      },
+      "diplomado": {
+        "title": "Diplomado en Gestión y Dirección de Proyectos TI",
+        "note": "Formación en PMBOK v6 y Scrum."
+      },
+      "inacap": {
+        "title": "Ingeniería en Informática"
+      }
+    }
+  },
+  "certifications": {
+    "eyebrow": "Credenciales",
+    "title": "Certificaciones y cursos",
+    "description": "Certificación profesional y cursos de capacitación completados.",
+    "professionalTitle": "Certificación profesional",
+    "coursesTitle": "Cursos y certificados de finalización",
+    "coursesNote": "Los cursos acreditan la finalización de una capacitación; no son certificaciones profesionales.",
+    "hours": "{{hours}} horas",
+    "items": {
+      "sfpc": {
+        "name": "Scrum Foundation Professional Certification (SFPC)"
+      },
+      "iso27001": {
+        "name": "Curso Internacional de ISO/IEC 27001 Lead Implementer",
+        "note": "Curso de capacitación. No corresponde a una certificación profesional acreditada de implementador o auditor ISO."
+      },
+      "iso9001": {
+        "name": "Aplicación Norma ISO 9001:2015"
+      },
+      "agile": {
+        "name": "Gestión de Proyectos con Metodologías Ágiles"
+      },
+      "leadership": {
+        "name": "Liderazgo"
+      },
+      "ai": {
+        "name": "Introducción a la Inteligencia Artificial"
+      },
+      "law21719": {
+        "name": "Ley de Protección de Datos 21.719"
+      },
+      "dataProtection": {
+        "name": "Normas y Procedimientos de Protección de Datos Personales"
+      }
+    }
+  },
+  "resumes": {
+    "eyebrow": "Currículum",
+    "title": "Currículum profesional",
+    "description": "Conoce mi trayectoria laboral, formación académica y competencias profesionales.",
+    "areasLabel": "Áreas del perfil",
+    "areas": {
+      "software": "Ingeniería de Software",
+      "leadership": "Liderazgo Técnico",
+      "projects": "Gestión de Proyectos TI",
+      "cybersecurity": "Ciberseguridad"
+    },
+    "actionsLabel": "Acciones del currículum",
+    "download": "Descargar CV",
+    "view": "Visualizar CV",
+    "unavailable": "No disponible",
+    "note": "El documento estará disponible cuando su publicación esté autorizada.",
+    "fileMeta": "PDF · {{language}} · {{pages}} · Actualizado: {{date}}",
+    "pages_one": "{{count}} página",
+    "pages_other": "{{count}} páginas",
+    "documentLanguage": {
+      "es": "Español",
+      "en": "Inglés"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contacto",
+    "title": "Conversemos",
+    "description": "Estoy abierto a conversar sobre oportunidades laborales en las siguientes áreas. La forma más directa de contactarme es LinkedIn.",
+    "interestsTitle": "Áreas de interés",
+    "interests": {
+      "software": "Desarrollo de software",
+      "leadership": "Liderazgo técnico",
+      "projects": "Gestión de proyectos TI",
+      "cybersecurity": "Ciberseguridad",
+      "infosec": "Seguridad de la información"
+    },
+    "connectTitle": "Contacto directo",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "linkedinCta": "Contactar por LinkedIn",
+    "githubCta": "Ver perfil de GitHub",
+    "locationLabel": "Ubicación",
+    "resumesLink": "Ver currículum"
+  },
+  "footer": {
+    "summary": "Ingeniería de software, liderazgo técnico y ciberseguridad.",
+    "areasLabel": "Áreas profesionales",
+    "quickNav": "Navegación rápida",
+    "links": "Perfiles profesionales",
+    "rights": "© {{year}} {{name}}. Todos los derechos reservados."
+  }
+}

@@ -1,0 +1,6 @@
+# Nunca subir material privado si se despliega desde el directorio local con la CLI de Vercel.
+private/
+.env
+.env.*
+*.pem
+*.key

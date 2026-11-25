@@ -1,0 +1,59 @@
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /*
+     * Reserva el espacio de la cabecera al desplazar: anclas (#seccion), scrollIntoView y foco por
+     * teclado, también hacia atrás con Shift+Tab (WCAG 2.4.11 Foco no oculto). Firefox respeta
+     * scroll-padding (no scroll-margin) al enfocar. La cabecera es `position: fixed` (no sticky):
+     * con sticky, Chromium/WebKit desplazaban la página al activar sus controles con teclado,
+     * porque scroll-padding deja la zona de la cabecera "fuera de vista".
+     */
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco visible, coherente en todos los controles */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  ::selection {
+    background-color: var(--primary-soft);
+    color: var(--foreground);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Transición estándar para estados interactivos */
+@utility transition-interactive {
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-standard);
+}

@@ -1,0 +1,135 @@
+/*
+ * Tokens de diseño. Ver docs/SISTEMA_DISENO.md.
+ * Los valores de color de cada tema se validan en src/styles/contrast.test.ts.
+ * El tema activo se define con [data-theme] en <html>.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Colores semánticos (tema claro) */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-subtle: #f1f5f9;
+  --foreground: #0f172a;
+  --muted: #475569;
+  --border: #cbd5e1;
+  --border-strong: #64748b;
+  --primary: #1d4ed8;
+  --primary-hover: #1e40af;
+  --on-primary: #ffffff;
+  --primary-soft: #dbeafe;
+  --accent: #0b6b63;
+  --accent-soft: #d5f5ef;
+  --ring: #1d4ed8;
+  --background-alt: #eef2f7;
+
+  /* Identidad cromática de las áreas profesionales */
+  --area-software: #1d4ed8;
+  --area-software-soft: #dbeafe;
+  --area-leadership: #0b6b63;
+  --area-leadership-soft: #d5f5ef;
+  --area-security: #6d28d9;
+  --area-security-soft: #ede9fe;
+
+  /* Sombras */
+  --elevation-card: 0 1px 2px rgb(15 23 42 / 6%), 0 4px 16px rgb(15 23 42 / 6%);
+  --elevation-raised: 0 8px 30px rgb(15 23 42 / 12%);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --background: #0f172a;
+  --surface: #1e293b;
+  --surface-subtle: #263449;
+  --foreground: #f8fafc;
+  --muted: #a3b1c6;
+  --border: #334155;
+  --border-strong: #8393ab;
+  --primary: #60a5fa;
+  --primary-hover: #93c5fd;
+  --on-primary: #0f172a;
+  --primary-soft: #172a47;
+  --accent: #2dd4bf;
+  --accent-soft: #103f3c;
+  --ring: #60a5fa;
+  --background-alt: #131d33;
+
+  --area-software: #60a5fa;
+  --area-software-soft: #172a47;
+  --area-leadership: #2dd4bf;
+  --area-leadership-soft: #103f3c;
+  --area-security: #a78bfa;
+  --area-security-soft: #2a1f55;
+
+  --elevation-card: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 25%);
+  --elevation-raised: 0 8px 30px rgb(0 0 0 / 45%);
+}
+
+/* Tokens independientes del tema */
+:root {
+  /* Foco (WCAG 2.4.7 / 2.4.13) */
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* Movimiento */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout */
+  --header-height: 4rem;
+  --container-max: 72rem;
+}
+
+/* Mapeo a utilidades de Tailwind (bg-background, text-muted, rounded-lg, shadow-card…) */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-ring: var(--ring);
+  --color-background-alt: var(--background-alt);
+  --color-area-software: var(--area-software);
+  --color-area-software-soft: var(--area-software-soft);
+  --color-area-leadership: var(--area-leadership);
+  --color-area-leadership-soft: var(--area-leadership-soft);
+  --color-area-security: var(--area-security);
+  --color-area-security-soft: var(--area-security-soft);
+
+  --shadow-card: var(--elevation-card);
+  --shadow-raised: var(--elevation-raised);
+}
+
+@theme {
+  --font-sans:
+    'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+    monospace;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  --spacing-section: clamp(4rem, 8vw, 7rem);
+
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 96rem; /* 1536px */
+}

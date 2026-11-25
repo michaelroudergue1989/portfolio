@@ -1,0 +1,340 @@
+{
+  "a11y": {
+    "skipToContent": "Skip to main content",
+    "opensInNewTab": "(opens in a new tab)",
+    "pdfFile": "(PDF file)"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "mobileLabel": "Navigation menu",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "home": "Home",
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "skills": "Skills",
+    "education": "Education",
+    "certifications": "Certifications",
+    "resumes": "Résumé",
+    "contact": "Contact"
+  },
+  "theme": {
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
+  },
+  "language": {
+    "label": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "hero": {
+    "title": "Computer Engineer",
+    "location": "La Araucanía Region, Chile",
+    "lead": "Computer Engineer with over 9 years of professional experience in the analysis, design, development, implementation and maintenance of information systems at higher education and healthcare institutions.",
+    "body": "Experience in Full Stack development, technical leadership, IT project coordination, systems integration, process automation, and software quality and security assurance.",
+    "closing": "Holder of a <es>Diplomado en Gestión y Dirección de Proyectos TI</es> (IT project management) from Duoc UC and a <es>Diploma de Postítulo en Ciberseguridad</es> (postgraduate cybersecurity diploma) from Universidad de Chile, with a professional outlook that integrates software engineering, technology leadership and information security.",
+    "ctaExperience": "View experience",
+    "visualLabel": "MR monogram",
+    "ctaDownload": "Download CV"
+  },
+  "stats": {
+    "label": "Professional highlights",
+    "years": "Years of professional experience",
+    "jobs": "Work experiences",
+    "hours": "Training hours (diploma and postgraduate diploma)",
+    "areas": "Professional areas"
+  },
+  "about": {
+    "eyebrow": "About me",
+    "title": "Engineering, leadership and security",
+    "p1": "I am a Computer Engineer with over 9 years of experience in the analysis, development and maintenance of institutional systems in higher education and healthcare.",
+    "p2": "I have worked on the technical coordination of development projects, requirements gathering, software solution implementation, systems integration, testing, technical documentation and quality assurance.",
+    "p3": "I have trained in IT project management, Scrum, PMBOK, information security, risk management, ISMS, ISO/IEC 27001 and 27002, personal data protection and Chilean cybersecurity regulations.",
+    "linesIntro": "My professional focus brings together three lines of work:",
+    "factsTitle": "Professional details",
+    "factName": "Name",
+    "factTitle": "Title",
+    "factLocation": "Location"
+  },
+  "areas": {
+    "eyebrow": "Expertise",
+    "title": "Three areas of work",
+    "description": "A profile that combines software engineering, technical coordination and information security.",
+    "experienceLabel": "Experience",
+    "trainingLabel": "Education",
+    "software": {
+      "title": "Software Engineering and Full Stack Development",
+      "shortTitle": "Software Engineering and Full Stack Development",
+      "description": "Analysis, development and maintenance of institutional systems.",
+      "experience": {
+        "fullStack": "Full Stack development",
+        "requirements": "Requirements analysis"
+      },
+      "training": {
+        "inacap": "<es>Ingeniería en Informática</es> (Computer Engineering), INACAP"
+      }
+    },
+    "leadership": {
+      "title": "Technical Leadership and IT Project Management",
+      "shortTitle": "Technical Leadership and IT Project Management",
+      "description": "Technical coordination of development work and agile methodologies.",
+      "experience": {
+        "coordination": "Technical coordination",
+        "techLead": "Tech Lead",
+        "agile": "Scrum"
+      },
+      "training": {
+        "diplomado": "<es>Diplomado en Gestión y Dirección de Proyectos TI</es>, Duoc UC"
+      }
+    },
+    "security": {
+      "title": "Cybersecurity and Information Security",
+      "shortTitle": "Cybersecurity and Information Security",
+      "description": "Software quality and security, with specialized training in cybersecurity.",
+      "experience": {
+        "quality": "Software quality and security"
+      },
+      "training": {
+        "postitulo": "<es>Diploma de Postítulo en Ciberseguridad</es>, Universidad de Chile",
+        "iso27001": "ISO/IEC 27001 Lead Implementer course"
+      }
+    }
+  },
+  "experience": {
+    "eyebrow": "Career",
+    "title": "Work experience",
+    "description": "Over nine years developing and maintaining information systems at higher education and healthcare institutions.",
+    "present": "Present",
+    "responsibilitiesLabel": "Responsibilities",
+    "technologiesLabel": "Technologies",
+    "uct": {
+      "role": "Software Analyst / Developer",
+      "items": {
+        "1": "Requirements analysis and gathering with user units.",
+        "2": "Functional definition, development, testing, and technical and functional documentation.",
+        "3": "Participation in and technical coordination of an institutional consent management system.",
+        "4": "Development and maintenance of institutional systems.",
+        "5": "Integrations and automations using n8n.",
+        "6": "Static code analysis with SonarQube.",
+        "7": "Complementary quality and security controls, with traceability linked to the Quality Management System.",
+        "8": "Implementation of accessibility features using speech synthesis."
+      }
+    },
+    "ufro": {
+      "unit": "<es>Dirección de Vinculación con el Medio</es>",
+      "role": "Software Developer / Technical Development Coordination",
+      "items": {
+        "1": "Independent development of institutional modules and repositories.",
+        "2": "Development of an institutional community engagement platform.",
+        "3": "Systems for continuing education, community engagement, student development and internationalization.",
+        "4": "Building centralized administration interfaces.",
+        "5": "Implementation of maintenance screens, validators, workflows, event management and document generation.",
+        "6": "Technical coordination of development activities.",
+        "7": "Testing, documentation and user training."
+      }
+    },
+    "lazos": {
+      "role": "Software Development Engineer",
+      "items": {
+        "1": "Development and maintenance of systems for procurement, inventory, vehicle maintenance and contract management.",
+        "2": "Requirements analysis.",
+        "3": "Feature implementation.",
+        "4": "Support and incident resolution.",
+        "5": "Technical documentation, user guides, progress reports, testing and training."
+      }
+    },
+    "cram": {
+      "role": "Webmaster / Web Developer",
+      "items": {
+        "1": "Administration and maintenance of an e-commerce platform.",
+        "2": "Webpay Plus integration through web services.",
+        "3": "Backup management.",
+        "4": "Content administration.",
+        "5": "Technical support and incident handling."
+      }
+    }
+  },
+  "projects": {
+    "eyebrow": "Projects",
+    "title": "Professional projects",
+    "description": "Solutions I have contributed to, described with generic professional names.",
+    "confidentialityNote": "For institutional confidentiality, projects are described with generic names and without internal details.",
+    "technologiesLabel": "Technologies",
+    "consentManagement": {
+      "title": "Institutional consent management system",
+      "description": "Participation in and technical coordination of the development of an institutional system to manage consents."
+    },
+    "communityEngagement": {
+      "title": "Institutional community engagement platform",
+      "description": "Development of modules for an institutional platform that manages community engagement, continuing education, student development and internationalization."
+    },
+    "systemsAdministration": {
+      "title": "Institutional systems administration platform",
+      "description": "Development of centralized interfaces to select systems, look up records and perform administration operations."
+    },
+    "healthManagement": {
+      "title": "Administrative management solutions for the healthcare sector",
+      "description": "Development and maintenance of solutions for procurement, inventory, vehicle maintenance and contract management."
+    },
+    "qualitySecurity": {
+      "title": "Application quality and security assurance",
+      "description": "Static code analysis with SonarQube and complementary quality and security review controls."
+    },
+    "accessibility": {
+      "title": "Web accessibility solutions",
+      "description": "Accessibility features using speech synthesis for visually impaired users."
+    },
+    "ecommerce": {
+      "title": "E-commerce development and integration",
+      "description": "Administration of a PrestaShop platform and Webpay Plus integration."
+    }
+  },
+  "skills": {
+    "eyebrow": "Skills",
+    "title": "Skills and technologies",
+    "description": "Core skills and technologies I have worked with, organized by category.",
+    "coreTitle": "Core skills",
+    "coreNote": "Professional self-assessment levels, as listed on my Get on Board profile.",
+    "levels": {
+      "advanced": "Advanced",
+      "intermediate": "Intermediate"
+    },
+    "complementaryTitle": "Complementary technologies and skills",
+    "educationBasis": "Skill supported mainly by formal education",
+    "legend": "Marked with this symbol: skills supported mainly by formal education.",
+    "groups": {
+      "languages": "Languages and frameworks",
+      "databases": "Databases",
+      "tooling": "Infrastructure and tools",
+      "projectManagement": "Project management",
+      "cybersecurity": "Cybersecurity"
+    },
+    "names": {
+      "fullStack": "Full Stack",
+      "projectManagement": "Project Management",
+      "cybersecurity": "Cybersecurity",
+      "informationSecurity": "Information Security",
+      "technicalCoordination": "Technical coordination",
+      "requirements": "Requirements gathering",
+      "technicalPlanning": "Technical planning",
+      "deliverables": "Deliverables tracking",
+      "documentation": "Technical and functional documentation",
+      "softwareSecurity": "Software security",
+      "staticAnalysis": "Static code analysis",
+      "riskManagement": "Risk management",
+      "isms": "ISMS",
+      "dataProtection": "Personal data protection",
+      "law21663": "Law 21.663 (Chile)",
+      "law21719": "Law 21.719 (Chile)"
+    }
+  },
+  "education": {
+    "eyebrow": "Education",
+    "title": "Academic background",
+    "description": "Undergraduate and postgraduate studies in computing, project management and cybersecurity.",
+    "hours": "{{hours}} hours",
+    "status": {
+      "approved": "Passed"
+    },
+    "items": {
+      "postitulo": {
+        "title": "<es>Diploma de Postítulo en Ciberseguridad</es> (Postgraduate Diploma in Cybersecurity)"
+      },
+      "diplomado": {
+        "title": "<es>Diplomado en Gestión y Dirección de Proyectos TI</es> (Diploma in IT Project Management and Leadership)",
+        "note": "Training in PMBOK v6 and Scrum."
+      },
+      "inacap": {
+        "title": "<es>Ingeniería en Informática</es> (Computer Engineering)"
+      }
+    }
+  },
+  "certifications": {
+    "eyebrow": "Credentials",
+    "title": "Certifications and courses",
+    "description": "Professional certification and completed training courses.",
+    "professionalTitle": "Professional certification",
+    "coursesTitle": "Courses and completion certificates",
+    "coursesNote": "Courses certify completion of a training program; they are not professional certifications.",
+    "hours": "{{hours}} hours",
+    "items": {
+      "sfpc": {
+        "name": "Scrum Foundation Professional Certification (SFPC)"
+      },
+      "iso27001": {
+        "name": "<es>Curso Internacional de ISO/IEC 27001 Lead Implementer</es> (International ISO/IEC 27001 Lead Implementer course)",
+        "note": "Training course. It is not an accredited professional certification as an ISO implementer or auditor."
+      },
+      "iso9001": {
+        "name": "<es>Aplicación Norma ISO 9001:2015</es> (Application of the ISO 9001:2015 Standard)"
+      },
+      "agile": {
+        "name": "<es>Gestión de Proyectos con Metodologías Ágiles</es> (Project Management with Agile Methodologies)"
+      },
+      "leadership": {
+        "name": "Liderazgo (Leadership)"
+      },
+      "ai": {
+        "name": "<es>Introducción a la Inteligencia Artificial</es> (Introduction to Artificial Intelligence)"
+      },
+      "law21719": {
+        "name": "<es>Ley de Protección de Datos 21.719</es> (Chilean Data Protection Law 21.719)"
+      },
+      "dataProtection": {
+        "name": "<es>Normas y Procedimientos de Protección de Datos Personales</es> (Personal Data Protection Rules and Procedures)"
+      }
+    }
+  },
+  "resumes": {
+    "eyebrow": "Résumé",
+    "title": "Professional résumé",
+    "description": "Explore my work history, academic background and professional skills.",
+    "areasLabel": "Profile areas",
+    "areas": {
+      "software": "Software Engineering",
+      "leadership": "Technical Leadership",
+      "projects": "IT Project Management",
+      "cybersecurity": "Cybersecurity"
+    },
+    "actionsLabel": "Résumé actions",
+    "download": "Download CV",
+    "view": "View CV",
+    "unavailable": "Not available",
+    "note": "The document will be available once its publication is authorized.",
+    "fileMeta": "PDF · {{language}} · {{pages}} · Updated: {{date}}",
+    "pages_one": "{{count}} page",
+    "pages_other": "{{count}} pages",
+    "documentLanguage": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Let's talk",
+    "description": "I am open to discussing job opportunities in the following areas. The most direct way to reach me is LinkedIn.",
+    "interestsTitle": "Areas of interest",
+    "interests": {
+      "software": "Software development",
+      "leadership": "Technical leadership",
+      "projects": "IT project management",
+      "cybersecurity": "Cybersecurity",
+      "infosec": "Information security"
+    },
+    "connectTitle": "Direct contact",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "linkedinCta": "Contact me on LinkedIn",
+    "githubCta": "View GitHub profile",
+    "locationLabel": "Location",
+    "resumesLink": "View résumé"
+  },
+  "footer": {
+    "summary": "Software engineering, technical leadership and cybersecurity.",
+    "areasLabel": "Professional areas",
+    "quickNav": "Quick navigation",
+    "links": "Professional profiles",
+    "rights": "© {{year}} {{name}}. All rights reserved."
+  }
+}

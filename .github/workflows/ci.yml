@@ -1,0 +1,109 @@
+# Integración continua. NO despliega y NO usa secretos.
+# Se ejecutará cuando el repositorio se publique (aún no se ha hecho push: este workflow no se ha ejecutado).
+#
+# Las acciones están fijadas por SHA de commit (con la versión en el comentario) para evitar que una
+# etiqueta movida ejecute código distinto. Dependabot propone las actualizaciones (.github/dependabot.yml).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Sin permisos por defecto; cada job declara solo lo que necesita.
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Calidad (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22.x', '24.x']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node.js ${{ matrix.node }}
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Instalar dependencias (reproducible)
+        run: npm ci
+
+      - name: Formato
+        run: npm run format:check
+
+      - name: Tipos
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Pruebas unitarias con cobertura (umbrales en vitest.config.ts)
+        run: npm run test:coverage
+
+      - name: Build (ejecuta la guardia de publicación como postbuild)
+        run: npm run build
+
+      - name: Guardia de publicación
+        # En CI no existe private/denylist.txt: la guardia informa la LIMITACIÓN y la revisión de
+        # privacidad queda INCOMPLETA. Esa revisión debe hacerse localmente antes de publicar.
+        run: npm run verify:publication
+
+      - name: Auditoría de dependencias
+        run: npm audit --audit-level=moderate
+
+  e2e:
+    name: E2E (Chromium, Firefox, WebKit)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    env:
+      # Los navegadores se instalan dentro del proyecto (coincide con playwright.config.ts).
+      PLAYWRIGHT_BROWSERS_PATH: '0'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node.js 24.x
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Instalar dependencias (reproducible)
+        run: npm ci
+
+      - name: Instalar navegadores de Playwright
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Pruebas E2E y de accesibilidad (compila y sirve dist/ con las cabeceras de vercel.json)
+        run: npm run test:e2e
+
+      - name: Informe de Playwright
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
