@@ -39,8 +39,8 @@ evidencia medible para la auditoría. No se añadió ninguna dependencia de prod
 
 ### Unitarias e integración (Vitest)
 
-- **26 archivos, 380 pruebas, todas pasan** (2026-11-25, tras las correcciones de la Fase 6).
-- Cobertura: **líneas 99,35 %**, sentencias 98,21 %, funciones 99,20 %, ramas 89,37 %.
+- **26 archivos, 388 pruebas, todas pasan** (2026-11-25, tras la corrección de la Fase A).
+- Cobertura: **líneas 99,37 %**, sentencias 98,28 %, funciones 99,21 %, ramas 89,57 %.
   Umbrales mínimos en `vitest.config.ts`: líneas/sentencias/funciones 95 %, ramas 80 %.
   Alcance: `src/` (los scripts de `scripts/` se prueban mediante sus funciones puras, pero no se
   incluyen en el informe de cobertura).
@@ -51,35 +51,62 @@ evidencia medible para la auditoría. No se añadió ninguna dependencia de prod
 
 ### E2E (Playwright)
 
-| Motor     | Pruebas listadas | Resultado                                                                             |
-| --------- | ---------------- | ------------------------------------------------------------------------------------- |
-| Chromium  | 107              | todas pasan                                                                           |
-| Firefox   | 83               | todas pasan                                                                           |
-| WebKit    | 83               | todas pasan (0 reintentos necesarios en la última ejecución; ver Fase 6)              |
-| **Total** | **273**          | **265 pasan, 8 omitidas, 0 fallan, 0 inestables** (ejecución completa del 2026-11-25) |
+| Motor     | Pruebas listadas | Resultado                                                               |
+| --------- | ---------------- | ----------------------------------------------------------------------- |
+| Chromium  | 123              | todas pasan                                                             |
+| Firefox   | 99               | todas pasan                                                             |
+| WebKit    | 99               | todas pasan (sin reintentos)                                            |
+| **Total** | **321**          | **312 pasan, 9 omitidas, 0 fallan** (ejecución completa del 2026-11-25) |
 
-Omitidas (8) y motivo:
+Omitidas (9) y motivo:
 
-- Recorrido con **Tab por enlaces** en WebKit (5 en navegación + 1 en menú móvil): WebKit/Safari no
+- Recorrido con **Tab por enlaces** en WebKit (5 en navegación, 1 en menú móvil y 1 en foco por teclado): WebKit/Safari no
   enfoca enlaces con Tab por defecto (requiere Option+Tab o un ajuste del sistema).
 - Métricas de rendimiento en Firefox y WebKit (2): se miden solo en Chromium.
 
 Cobertura funcional de los E2E (`e2e/`):
 
-| Archivo               | Verifica                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `smoke.spec.ts`       | Carga inicial, título/idioma/h1, 11 secciones, fuentes, sin desbordamiento (320–1440 px), cabeceras de `vercel.json`, CSP sin `unsafe-*`, robots/sitemap sin dominio inventado, sin `.map`/`private`, sin PDF, solo claves de tema/idioma en `localStorage`, sin cookies                                                                                                                                                                                                                                                                                                               |
-| `navigation.spec.ts`  | 8 enlaces × (clic + hash + `aria-current`) y 8 accesos directos por fragmento, sección activa al desplazar, enlaces internos sin rotos, pie, teclado: enlace de salto, Enter, recorrido completo con Tab (foco visible, no oculto, sin trampas), Shift+Tab hacia atrás, orden del foco                                                                                                                                                                                                                                                                                                 |
-| `mobile-menu.spec.ts` | Abrir/cerrar, Escape + foco, 8 enlaces × (cerrar y navegar), clic fuera, teclado, sección activa, **regresión**: abrir con teclado a gran profundidad no desplaza la página                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `preferences.spec.ts` | Cambio de idioma, persistencia, idioma inicial por navegador, tema, persistencia, sin parpadeo, tema del sistema, valores guardados inválidos                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `links.spec.ts`       | LinkedIn/GitHub (atributos seguros), https, sin `mailto`/`tel`/descargas/formularios, **un único currículum** disponible (descarga y visualización con el mismo PDF; único enlace a archivo permitido), sin referencias a los otros tres, CTA "Descargar CV" + "Ver experiencia", traducción                                                                                                                                                                                                                                                                                           |
-| `resume-pdf.spec.ts`  | **PDF real**: `dist/` idéntico a `public/` (SHA-256), HTTP 200, `application/pdf`, cabeceras/CSP, `verifyCv` sobre el archivo servido, descarga efectiva (Hero y sección, hash íntegro), pestaña nueva de «Visualizar CV», navegación a Currículum, ES/EN × claro/oscuro × escritorio/móvil sin errores de consola, CSP ni desbordamiento. El **visor** de PDF no existe en modo headless: se verificó a mano con Chromium y Firefox con ventana (el PDF se muestra con la CSP completa; Chromium solicita `/favicon.ico` en la pestaña del PDF y recibe 404, sin efecto en la página) |
-| `motion.spec.ts`      | `prefers-reduced-motion`: sin scroll suave ni transiciones; movimiento normal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `a11y.spec.ts`        | axe + comprobaciones propias, incluido el **idioma de las partes** (WCAG 3.1.2; ver `docs/ACCESIBILIDAD.md`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `performance.spec.ts` | CLS < 0,1, FCP < 1,8 s, LCP < 2,5 s, ≤ 8 peticiones (Chromium)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Archivo                     | Verifica                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `smoke.spec.ts`             | Carga inicial, título/idioma/h1, 11 secciones, fuentes, sin desbordamiento (320–1440 px), cabeceras de `vercel.json`, CSP sin `unsafe-*`, robots/sitemap sin dominio inventado, sin `.map`/`private`, sin PDF, solo claves de tema/idioma en `localStorage`, sin cookies                                                                                                                                                                                                                                                                                                               |
+| `navigation.spec.ts`        | 8 enlaces × (clic + hash + `aria-current`) y 8 accesos directos por fragmento, sección activa al desplazar, enlaces internos sin rotos, pie, teclado: enlace de salto, Enter, recorrido completo con Tab (foco visible, no oculto, sin trampas), Shift+Tab hacia atrás, orden del foco                                                                                                                                                                                                                                                                                                 |
+| `mobile-menu.spec.ts`       | Abrir/cerrar, Escape + foco, 8 enlaces × (cerrar y navegar), clic fuera, teclado, sección activa, **regresión**: abrir con teclado a gran profundidad no desplaza la página                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `preferences.spec.ts`       | Cambio de idioma, persistencia, idioma inicial por navegador, tema, persistencia, sin parpadeo, tema del sistema, valores guardados inválidos                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `links.spec.ts`             | LinkedIn/GitHub (atributos seguros), https, sin `mailto`/`tel`/descargas/formularios, **un único currículum** disponible (descarga y visualización con el mismo PDF; único enlace a archivo permitido), sin referencias a los otros tres, CTA "Descargar CV" + "Ver experiencia", traducción                                                                                                                                                                                                                                                                                           |
+| `resume-pdf.spec.ts`        | **PDF real**: `dist/` idéntico a `public/` (SHA-256), HTTP 200, `application/pdf`, cabeceras/CSP, `verifyCv` sobre el archivo servido, descarga efectiva (Hero y sección, hash íntegro), pestaña nueva de «Visualizar CV», navegación a Currículum, ES/EN × claro/oscuro × escritorio/móvil sin errores de consola, CSP ni desbordamiento. El **visor** de PDF no existe en modo headless: se verificó a mano con Chromium y Firefox con ventana (el PDF se muestra con la CSP completa; Chromium solicita `/favicon.ico` en la pestaña del PDF y recibe 404, sin efecto en la página) |
+| `motion.spec.ts`            | `prefers-reduced-motion`: sin scroll suave ni transiciones; movimiento normal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `scroll-regression.spec.ts` | Clic (con y sin pulsación) y toque en contenido sin mover la página; enlaces y botones de `<main>` desplazado; enlace medio tapado; foco por teclado                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `a11y.spec.ts`              | axe + comprobaciones propias, incluido el **idioma de las partes** (WCAG 3.1.2; ver `docs/ACCESIBILIDAD.md`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `performance.spec.ts`       | CLS < 0,1, FCP < 1,8 s, LCP < 2,5 s, ≤ 8 peticiones (Chromium)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 Cada prueba incluye un **monitor automático** que falla si hay: errores de JavaScript, errores de
 consola, peticiones a orígenes externos, respuestas HTTP ≥ 400 del propio sitio o violaciones de CSP.
+
+### Fase A: salto de scroll al hacer clic (2026-11-25)
+
+**Defecto (presente en producción en el commit anterior).** Pulsar cualquier contenido de `<main>` devolvía la página
+al inicio. `<main tabIndex={-1}>` recibía el foco y `useFocusNotObscured` lo «destapaba» (su borde superior es
+negativo). En WebKit un clic en un enlace o botón no lo enfoca (el foco pasa a `<main>`), así que la página se movía
+entre presionar y soltar y **el clic se perdía**. Un segundo camino afectaba a todos los motores: pulsar un enlace
+medio tapado por la cabecera lo enfocaba y lo desplazaba antes de soltar.
+
+**Corrección.** El hook ignora `<main>` y el foco originado por un puntero; sigue actuando con teclado y foco por
+programa (WCAG 2.4.11).
+
+**Corrige el diagnóstico de la Fase 6.** La «inestabilidad de WebKit» de las pruebas de CV **no era una limitación del
+navegador ni del entorno: era este defecto**, y el reintento del clic (y el reintento de Playwright en WebKit) lo
+ocultaba. Ambos se eliminaron: las pruebas usan un solo clic y `retries: 0`.
+
+**Evidencia.** Las pruebas unitarias nuevas fallaban con el código anterior (3 del contenedor y 3 del puntero) y
+`e2e/scroll-regression.spec.ts` falla en 28 casos contra el despliegue anterior. Tras la corrección, sin
+reintentos: WebKit 300 de 300 (`--repeat-each=10` de regresión y PDF), Chromium y Firefox 186 de 186
+(`--repeat-each=3`) y suite completa **321 listadas, 312 pasan, 9 omitidas, 0 fallan**; unitarias **388**.
+
+**Entornos.** `e2e/environment.ts` distingue `vite preview` (SPA en rutas desconocidas) de un despliegue
+(`E2E_BASE_URL=https://…`: 404 reales, canonical, sitemap y robots exigidos) y respeta `SITE_URL` si se compila y
+prueba con ella.
+
+**Limitaciones.** Todo es emulado: no se probó Safari en macOS o iOS ni dispositivos físicos.
 
 ### Fase 6: auditoría independiente y correcciones (2026-11-25)
 
@@ -87,24 +114,8 @@ consola, peticiones a orígenes externos, respuestas HTTP ≥ 400 del propio sit
 `verify:publication:strict`, `verify:cv`, `audit:deps` y `npm audit` con código de salida 0; unitarias 26 archivos y
 **380 pruebas**; E2E **273 listadas (265 pasan, 8 omitidas, 0 fallan, 0 inestables)**; 0 vulnerabilidades.
 
-**Inestabilidad de WebKit (M-04).** Las dos pruebas de `resume-pdf.spec.ts` sobre descarga y apertura de pestaña
-fallaban de forma intermitente solo en WebKit para Windows (timeout de `waitForEvent`). Medición sin reintentos y
-con 3 workers: 5 de 30 intentos fallaban. Investigación y resultado:
-
-- **Descarga:** el clic podía perderse durante el desplazamiento suave hacia `#resumes`. Se espera a que el
-  desplazamiento termine (`expectScrolledTo`) y a que el enlace sea visible, sin esperas fijas: **80 de 80**
-  intentos correctos en WebKit con 1 y 3 workers.
-- **Pestaña nueva («Visualizar CV»):** el fallo persiste solo en ese enlace real de WebKit (~20–45 % de los intentos
-  sin reintento). No depende de `rel="noopener"` (un enlace externo de la página abre la pestaña 20/20 con las tres
-  variantes de `rel`), de la carga, del desplazamiento, de las fuentes ni de los fotogramas; un ancla inyectada
-  equivalente abre siempre (15/15). **La causa exacta no se determinó.** Mitigación: la prueba repite el **clic**
-  (intentos de 3 s, máximo 20 s, sin esperas fijas) hasta que la pestaña se abre y mantiene todas sus
-  verificaciones (URL, `window.opener`, página sin cambios). La navegación se sustituye solo por un HTML mínimo
-  porque los navegadores sin ventana no tienen visor de PDF; el PDF real se verifica byte a byte en otras pruebas y
-  su visualización se comprobó en Chromium y Firefox con ventana. Con esta mitigación: 40 de 40 en WebKit (1 y 3
-  workers), 15 de 15 en Chromium y 20 de 20 en Firefox.
-- **Riesgo residual:** WebKit para Windows no equivale a Safari ni a WebKit en Linux; la apertura de pestañas por
-  clic puede seguir siendo intermitente fuera de la prueba. No se verificó en Linux ni en dispositivos reales.
+**Inestabilidad de WebKit (M-04).** Se atribuyó entonces a WebKit y se mitigó con un reintento del clic. El
+diagnóstico era **erróneo**: la causa era un defecto de la aplicación (ver «Fase A»).
 
 **Vitest y la letra de unidad en Windows (B-05).** Reproducido: con el directorio de trabajo `c:\Proyectos\portfolio`
 (unidad en **minúscula**) fallan las pruebas de componentes (los _matchers_ de `jest-dom` no se registran, «Invalid
@@ -157,7 +168,5 @@ generado a partir del SVG, sin tocar la CSP ni el favicon SVG).
 
 ## 5. Estabilidad
 
-Con muchos procesos en paralelo, WebKit (build para Windows) mostró fluctuaciones puntuales distintas en
-cada corrida (todas pasaban en aislamiento). Se acotó la concurrencia (`workers: 3` local, 2 en CI) y se
-permite **un reintento solo en WebKit**; Playwright informa como _flaky_ cualquier prueba que lo necesite.
-Última evidencia: 3 ejecuciones completas consecutivas sin fallos ni reintentos.
+Concurrencia acotada (`workers: 3` local, 2 en CI) y **ningún reintento** (`retries: 0`): una prueba inestable
+se investiga, no se reintenta. Un reintento en WebKit ocultó un defecto real (ver «Fase A»).

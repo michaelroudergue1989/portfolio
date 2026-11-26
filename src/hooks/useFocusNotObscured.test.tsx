@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useFocusNotObscured } from './useFocusNotObscured';
 
 function rect(top: number, bottom = top + 40): DOMRect {
@@ -82,6 +83,133 @@ describe('useFocusNotObscured', () => {
     element.remove();
     vi.advanceTimersByTime(40);
     expect(scrollBy).not.toHaveBeenCalled();
+  });
+
+  describe('regresión: el contenedor <main> enfocable no debe desplazar la página', () => {
+    // Temporizadores reales: user-event los necesita para simular pulsaciones y teclado.
+    beforeEach(() => {
+      vi.useRealTimers();
+    });
+
+    /** El hook ajusta en el siguiente fotograma: se espera a que se haya ejecutado. */
+    const nextFrame = () =>
+      new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
+
+    /** Como en Layout: <main tabIndex={-1}> con su borde superior muy por encima de la ventana. */
+    function renderPage(): void {
+      document.body.innerHTML =
+        '<header><button id="in-header">menú</button></header>' +
+        '<main id="main" tabindex="-1"><p id="text">texto informativo</p><button id="first">uno</button></main>';
+      pick('header').getBoundingClientRect = () => rect(0, 65);
+      pick('#main').getBoundingClientRect = () => rect(-3000, 5000);
+      renderHook(() => {
+        useFocusNotObscured();
+      });
+    }
+
+    it('ignora el focusin de <main> aunque su borde superior sea negativo', async () => {
+      renderPage();
+      pick('#main').dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      await nextFrame();
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('un clic en contenido no interactivo enfoca <main> y no desplaza', async () => {
+      renderPage();
+      const user = userEvent.setup({ delay: null });
+      await user.click(pick('#text'));
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#main')); // el clic mueve el foco a <main>
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('enfocar <main> como destino del enlace de salto no desplaza', async () => {
+      renderPage();
+      pick('#main').focus();
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#main'));
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('con teclado, un elemento interactivo de <main> bajo la cabecera sí se destapa', async () => {
+      renderPage();
+      pick('#first').getBoundingClientRect = () => rect(30);
+      const user = userEvent.setup({ delay: null });
+      pick('#main').focus(); // tras «saltar al contenido»
+      await user.tab();
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#first'));
+      expect(scrollBy).toHaveBeenCalledExactlyOnceWith({ top: 30 - 65 - 16, behavior: 'instant' });
+    });
+
+    it('con teclado, un elemento ya visible no provoca desplazamiento', async () => {
+      renderPage();
+      pick('#first').getBoundingClientRect = () => rect(300);
+      const user = userEvent.setup({ delay: null });
+      pick('#main').focus();
+      await user.tab();
+      await nextFrame();
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('regresión: el foco dado por puntero no mueve el elemento mientras se pulsa', () => {
+    beforeEach(() => {
+      vi.useRealTimers();
+      document.body.innerHTML =
+        '<header></header><main id="main" tabindex="-1"><button id="first">uno</button><button id="second">dos</button></main>';
+      pick('header').getBoundingClientRect = () => rect(0, 65);
+      // Ambos botones están parcialmente bajo la cabecera.
+      pick('#first').getBoundingClientRect = () => rect(41);
+      pick('#second').getBoundingClientRect = () => rect(41);
+      renderHook(() => {
+        useFocusNotObscured();
+      });
+    });
+
+    const nextFrame = () =>
+      new Promise<void>((resolve) => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
+
+    it('al mantener pulsado un control medio tapado no desplaza (el clic no se pierde)', async () => {
+      const user = userEvent.setup({ delay: null });
+      await user.pointer({ keys: '[MouseLeft>]', target: pick('#first') }); // presiona sin soltar
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#first'));
+      expect(scrollBy).not.toHaveBeenCalled();
+      await user.pointer({ keys: '[/MouseLeft]' });
+    });
+
+    it('después de usar el ratón, el teclado vuelve a destapar el foco', async () => {
+      const user = userEvent.setup({ delay: null });
+      await user.click(pick('#first'));
+      await nextFrame();
+      await user.tab();
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#second'));
+      expect(scrollBy).toHaveBeenCalledExactlyOnceWith({ top: 41 - 65 - 16, behavior: 'instant' });
+    });
+
+    it('con Mayús+Tab (hacia atrás) también destapa', async () => {
+      const user = userEvent.setup({ delay: null });
+      await user.click(pick('#second'));
+      await nextFrame();
+      await user.tab({ shift: true });
+      await nextFrame();
+      expect(document.activeElement).toBe(pick('#first'));
+      expect(scrollBy).toHaveBeenCalledOnce();
+    });
   });
 
   it('deja de escuchar al desmontar', () => {

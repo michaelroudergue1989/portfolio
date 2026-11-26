@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { IS_REMOTE, SITE_ORIGIN } from './environment';
 import { DESKTOP, expect, SECTION_IDS, test } from './fixtures';
 
 const vercel = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
@@ -68,7 +69,7 @@ test.describe('carga inicial', () => {
     }
   });
 
-  test('robots.txt es indexable y no inventa dominio; sin sitemap sin SITE_URL', async ({
+  test('robots.txt, canonical y sitemap son coherentes con SITE_URL (o con su ausencia)', async ({
     page,
   }) => {
     const robots = await page.request.get('/robots.txt');
@@ -76,9 +77,26 @@ test.describe('carga inicial', () => {
     const body = await robots.text();
     expect(body).toMatch(/^User-agent: \*/m);
     expect(body).not.toMatch(/Disallow:\s*\/\s*$/m);
-    expect(body).not.toMatch(/Sitemap:/);
     await page.goto('/');
-    await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+    const canonical = page.locator('link[rel="canonical"]');
+
+    if (SITE_ORIGIN === null) {
+      // Sin SITE_URL no se inventa dominio.
+      expect(body).not.toMatch(/Sitemap:/);
+      await expect(canonical).toHaveCount(0);
+      return;
+    }
+    expect(body.split(/\r?\n/)).toContain(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`);
+    await expect(canonical).toHaveCount(1);
+    await expect(canonical).toHaveAttribute('href', `${SITE_ORIGIN}/`);
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content',
+      `${SITE_ORIGIN}/`,
+    );
+    const sitemap = await page.request.get('/sitemap.xml');
+    expect(sitemap.status()).toBe(200);
+    expect(sitemap.headers()['content-type']).toContain('xml');
+    expect(await sitemap.text()).toContain(`<loc>${SITE_ORIGIN}/</loc>`);
   });
 
   test('no se publican mapas de código fuente ni archivos privados', async ({ page }) => {
@@ -87,10 +105,24 @@ test.describe('carga inicial', () => {
     expect(scriptSrc).toMatch(/^\/assets\/.+\.js$/);
     const source = await (await page.request.get(scriptSrc ?? '')).text();
     expect(source).not.toMatch(/sourceMappingURL/);
-    for (const path of [`${scriptSrc ?? ''}.map`, '/private/denylist.txt', '/.env']) {
-      const type = (await page.request.get(path)).headers()['content-type'] ?? '';
-      // vite preview devuelve index.html (SPA) para rutas desconocidas; Vercel devuelve 404.
-      expect(type, path).toContain('text/html');
+    const sensitive = [`${scriptSrc ?? ''}.map`, '/private/denylist.txt', '/.env'];
+    // En el despliegue, además, el resto del repositorio y las rutas inexistentes deben dar 404.
+    const alsoRemote = [
+      '/.git/config',
+      '/package.json',
+      '/vercel.json',
+      '/src/main.tsx',
+      '/docs/PUBLICACION.md',
+      '/ruta-inexistente',
+    ];
+    for (const path of IS_REMOTE ? [...sensitive, ...alsoRemote] : sensitive) {
+      const response = await page.request.get(path);
+      if (IS_REMOTE) {
+        expect(response.status(), path).toBe(404);
+      } else {
+        // vite preview devuelve index.html (SPA) para rutas desconocidas.
+        expect(response.headers()['content-type'] ?? '', path).toContain('text/html');
+      }
     }
   });
 

@@ -97,8 +97,12 @@ revisión humana · **I** = incompleto (hallazgo abierto) · **N** = no verifica
 ## 4. Decisiones de diseño relevantes
 
 - **Cabecera `fixed` y opaca** + espaciador + `scroll-padding-top` (anclas y foco) + `useFocusNotObscured`
-  (Firefox). Razones: una cabecera _sticky_ con `scroll-padding` desplazaba la página al activar sus
-  controles con teclado, y con fondo semitransparente axe no podía calcular el contraste.
+  (Firefox). El ajuste actúa con foco por teclado (o por programa), nunca con puntero ni sobre `<main>`
+  (antes devolvía la página al inicio al pulsar el contenido). **Caso límite no probado:** después de usar un
+  puntero, un foco movido sin pulsar teclas (por programa o por alguna tecnología de apoyo) no se ajusta hasta
+  que haya una pulsación de tecla. Razones de la cabecera `fixed`: una cabecera _sticky_ con `scroll-padding`
+  desplazaba la página al activar sus controles con teclado, y con fondo semitransparente axe no podía calcular
+  el contraste.
 - **Menú móvil como disclosure** (no modal): sin atrapar el foco; se cierra con Escape, clic fuera o al salir.
 - **Sin animaciones decorativas**; con `prefers-reduced-motion` se anulan transiciones y scroll suave.
 - **Colores:** tokens validados por prueba; el color nunca es el único portador de significado en las áreas.

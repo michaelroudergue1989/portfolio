@@ -1,4 +1,5 @@
 import { test as base, expect, type Page } from '@playwright/test';
+import { OWN_HOSTS } from './environment';
 
 /** Observador de incidencias de una página: se verifica automáticamente al terminar cada prueba. */
 export interface Monitor {
@@ -12,9 +13,6 @@ export interface Monitor {
 interface CspWindow {
   __cspViolations?: string[];
 }
-
-/** Hosts locales permitidos; cualquier otro origen es una petición externa inesperada. */
-const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1']);
 
 export const test = base.extend<{ monitor: Monitor }>({
   monitor: [
@@ -44,11 +42,11 @@ export const test = base.extend<{ monitor: Monitor }>({
         const url = new URL(request.url());
         if (url.protocol === 'data:' || url.protocol === 'about:' || url.protocol === 'blob:')
           return;
-        if (!LOCAL_HOSTS.has(url.hostname)) monitor.externalRequests.push(request.url());
+        if (!OWN_HOSTS.has(url.hostname)) monitor.externalRequests.push(request.url());
       });
       page.on('response', (response) => {
         const url = new URL(response.url());
-        if (LOCAL_HOSTS.has(url.hostname) && response.status() >= 400) {
+        if (OWN_HOSTS.has(url.hostname) && response.status() >= 400) {
           monitor.badResponses.push(`${String(response.status())} ${url.pathname}`);
         }
       });

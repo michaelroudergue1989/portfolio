@@ -1,8 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { verifyCv } from '../scripts/verify-cv.mjs';
-import type { Page } from '@playwright/test';
-import { DESKTOP, expect, expectScrolledTo, MOBILE, test } from './fixtures';
+import { DESKTOP, expect, MOBILE, test } from './fixtures';
 
 const PDF_PATH = '/cv/michael-roudergue-cv.pdf';
 const sha256 = (data: Uint8Array) => createHash('sha256').update(data).digest('hex');
@@ -13,16 +12,6 @@ const resume = JSON.parse(readFileSync('src/data/resume.json', 'utf8')) as {
   pages: number;
   language: string;
 };
-
-/**
- * Abre la sección por ancla y espera a que el desplazamiento (suave) termine y la sección esté
- * estable: un clic durante el desplazamiento puede perderse en WebKit.
- */
-async function openResumes(page: Page): Promise<void> {
-  await page.goto('/#resumes');
-  await expectScrolledTo(page, 'resumes');
-  await expect(page.locator('#resumes').getByRole('link', { name: /Descargar CV/ })).toBeVisible();
-}
 
 test.describe('CV público real (archivo servido por el build)', () => {
   test.use({ viewport: DESKTOP });
@@ -74,7 +63,7 @@ test.describe('CV público real (archivo servido por el build)', () => {
   });
 
   test('"Descargar CV" de la sección Currículum descarga el mismo PDF', async ({ page }) => {
-    await openResumes(page);
+    await page.goto('/#resumes');
     const [download] = await Promise.all([
       page.waitForEvent('download'),
       page
@@ -90,12 +79,12 @@ test.describe('CV público real (archivo servido por el build)', () => {
     page,
     context,
   }) => {
-    await openResumes(page);
+    await page.goto('/#resumes');
     const link = page.locator('#resumes').getByRole('link', { name: /Visualizar CV/ });
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     // Los navegadores sin ventana no tienen visor de PDF: según el motor, la navegación de la
-    // pestaña nueva se convierte en una descarga y no siempre se emite el evento de página (WebKit).
+    // pestaña nueva se convierte en una descarga y la pestaña queda sin URL.
     // Para comprobar de forma determinista el comportamiento de la PÁGINA (pestaña nueva, URL y
     // desvinculación del opener) se sustituye solo esa navegación por un HTML mínimo. El contenido
     // real del PDF se verifica byte a byte en las otras pruebas, y su visualización en Chromium y
@@ -107,17 +96,7 @@ test.describe('CV público real (archivo servido por el build)', () => {
         body: '<!doctype html><title>visor</title>',
       }),
     );
-    // WebKit para Windows a veces no entrega la apertura de la pestaña tras el clic en este
-    // enlace (investigado: no depende del desplazamiento, de las fuentes ni de la carga; un ancla
-    // inyectada equivalente sí abre siempre). Se repite el CLIC, con intentos acotados y sin
-    // esperas fijas, hasta que la pestaña se abre; sigue exigiéndose que se abra.
-    let popup: Page | undefined;
-    await expect(async () => {
-      const opened = context.waitForEvent('page', { timeout: 3_000 });
-      await link.click();
-      popup = await opened;
-    }).toPass({ timeout: 20_000, intervals: [0] });
-    if (!popup) throw new Error('La pestaña de visualización no se abrió');
+    const [popup] = await Promise.all([context.waitForEvent('page'), link.click()]);
     await popup.waitForLoadState();
     expect(new URL(popup.url()).pathname).toBe(PDF_PATH);
     expect(await popup.evaluate(() => window.opener === null)).toBe(true);
