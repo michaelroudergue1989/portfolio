@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { navItems } from '@/data/navigation';
 import { cx } from '@/lib/cx';
+import type { NavItem } from '@/types/portfolio';
 
 interface NavLinksProps {
+  items: readonly NavItem[];
   orientation: 'horizontal' | 'vertical';
   /** Id de la sección activa según el scroll. */
   activeId?: string | null;
@@ -10,13 +11,13 @@ interface NavLinksProps {
   onNavigate?: () => void;
 }
 
-export function NavLinks({ orientation, activeId = null, onNavigate }: NavLinksProps) {
+export function NavLinks({ items, orientation, activeId = null, onNavigate }: NavLinksProps) {
   const { t } = useTranslation();
   const horizontal = orientation === 'horizontal';
 
   return (
     <ul className={cx('flex', horizontal ? 'items-center gap-1' : 'flex-col gap-1')}>
-      {navItems.map((item) => {
+      {items.map((item) => {
         const active = item.targetId === activeId;
         return (
           <li key={item.id}>

@@ -2,6 +2,7 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type FocusEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
+import { extendedNavItems } from '@/data/navigation';
 import { NavLinks } from './NavLinks';
 
 /**
@@ -74,6 +75,7 @@ export function MobileMenu({ activeId = null }: { activeId?: string | null }) {
         >
           <nav aria-label={t('nav.mobileLabel')} className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
             <NavLinks
+              items={extendedNavItems}
               orientation="vertical"
               activeId={activeId}
               onNavigate={() => {

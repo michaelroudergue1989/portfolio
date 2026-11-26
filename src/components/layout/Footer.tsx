@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/Container';
 import { ExternalLink } from '@/components/ui/ExternalLink';
 import { areas } from '@/data/areas';
 import { contactLinks } from '@/data/contact';
-import { footerNavItems } from '@/data/navigation';
+import { extendedNavItems } from '@/data/navigation';
 import { profile } from '@/data/profile';
 import { cx } from '@/lib/cx';
 
@@ -40,7 +40,7 @@ export function Footer() {
               {t('footer.quickNav')}
             </p>
             <ul className="space-y-1 text-sm">
-              {footerNavItems.map((item) => (
+              {extendedNavItems.map((item) => (
                 <li key={item.id}>
                   <a href={`#${item.targetId}`} className={linkClasses}>
                     {t(item.labelKey)}

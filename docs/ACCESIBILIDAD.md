@@ -82,6 +82,23 @@ revisión humana · **I** = incompleto (hallazgo abierto) · **N** = no verifica
 | 4.1.2 Nombre, función, valor                   | A      | axe + pruebas (`aria-pressed`, `aria-expanded`, `aria-current`)                                                                                                                                                                                                                                                                                                                                                                                            |
 | 4.1.3 Mensajes de estado                       | N      | No hay mensajes de estado; no se evaluó el anuncio de cambios de tema/idioma con lectores de pantalla                                                                                                                                                                                                                                                                                                                                                      |
 
+### Incidente en Firefox (2.4.11), causa sin determinar
+
+Una ejecución de la suite midió «Contactar por LinkedIn» bajo la cabecera al recorrer hacia atrás con Shift+Tab. No se
+reprodujo de forma sistemática, no se determinó la causa ni está demostrado que sea independiente de la corrección de la
+Fase A. Las comprobaciones posteriores pasaron y el riesgo residual fue aceptado (detalle en `docs/PRUEBAS.md`).
+
+### Fase B: Hero móvil y menú
+
+- En pantallas compactas las acciones van tras la presentación. El orden se decide en el DOM (no con `order` de CSS):
+  lectura, tabulación y vista coinciden. Los enlaces no se duplican.
+- Enlaces del Hero y del menú móvil: al menos 44 px de alto en las pruebas. Los botones de idioma de la cabecera no
+  cambiaron.
+- El gráfico central sigue oculto por debajo de 1024 px (`display: none`, también para lectores de pantalla); queda el
+  monograma de la cabecera.
+- Al cruzar el punto de cambio (giro o redimensionado) los bloques se reordenan sin recrear los enlaces; el
+  comportamiento del foco enfocado en ese instante **no se probó en navegadores reales**.
+
 ## 3. No verificado (pendiente)
 
 - **Lectores de pantalla:** NVDA, JAWS, VoiceOver (macOS/iOS), TalkBack. No se probó ninguno.

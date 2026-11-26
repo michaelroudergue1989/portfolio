@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { navItems } from '@/data/navigation';
 import { NavLinks } from './NavLinks';
 
 export function DesktopNav({ activeId }: { activeId: string | null }) {
@@ -6,7 +7,7 @@ export function DesktopNav({ activeId }: { activeId: string | null }) {
 
   return (
     <nav aria-label={t('nav.label')} className="hidden xl:block">
-      <NavLinks orientation="horizontal" activeId={activeId} />
+      <NavLinks items={navItems} orientation="horizontal" activeId={activeId} />
     </nav>
   );
 }

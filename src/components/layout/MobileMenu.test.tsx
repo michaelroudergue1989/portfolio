@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { navItems } from '@/data/navigation';
+import { extendedNavItems } from '@/data/navigation';
+import i18n from '@/i18n';
 import { MobileMenu } from './MobileMenu';
 
 const openLabel = 'Abrir menú de navegación';
@@ -82,17 +83,36 @@ describe('MobileMenu', () => {
     expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
   });
 
-  it('ofrece los ocho enlaces funcionales, sin estados "Próximamente"', async () => {
+  it('ofrece los nueve enlaces funcionales, sin estados "Próximamente"', async () => {
     const user = userEvent.setup();
     render(<MobileMenu />);
     await user.click(screen.getByRole('button', { name: openLabel }));
     const links = screen.getAllByRole('link');
-    expect(links).toHaveLength(navItems.length);
+    expect(links).toHaveLength(9);
     expect(links.map((l) => l.getAttribute('href'))).toEqual(
-      navItems.map((item) => `#${item.targetId}`),
+      extendedNavItems.map((item) => `#${item.targetId}`),
     );
     expect(screen.queryByText(/próximamente/i)).not.toBeInTheDocument();
   });
+
+  it.each([
+    ['es', 'Currículum', openLabel],
+    ['en', 'Résumé', 'Open navigation menu'],
+  ])(
+    '(%s) "%s" lleva a la sección sin descargar el PDF y cierra el menú',
+    async (lang, name, open) => {
+      await i18n.changeLanguage(lang);
+      const user = userEvent.setup();
+      render(<MobileMenu activeId="resumes" />);
+      await user.click(screen.getByRole('button', { name: open }));
+      const link = screen.getByRole('link', { name });
+      expect(link).toHaveAttribute('href', '#resumes');
+      expect(link).not.toHaveAttribute('download');
+      expect(link).toHaveAttribute('aria-current', 'location');
+      await user.click(link);
+      expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+    },
+  );
 
   it('resalta la sección activa con aria-current', async () => {
     const user = userEvent.setup();

@@ -67,7 +67,7 @@ Las pruebas unitarias se ubican junto al código (`*.test.tsx`); `src/test/` con
 - **Fechas:** `lib/period.ts` formatea con `Intl.DateTimeFormat` según el idioma activo ("Mayo 2025" / "May 2025") y emite `<time dateTime>`.
 - **Estado de publicación:** `Resume.available` (con `language` y `updatedAt` obligatorios al habilitar) controla las descargas; `profile.photo` y `Certification.credentialUrl` quedan preparados pero vacíos. Los proyectos del código son solo genéricos (ver Fase 4).
 - **Sin filtros de proyectos:** con 7 tarjetas no aportan utilidad y añadirían superficie de accesibilidad.
-- **Currículum fuera de la cabecera:** ocho entradas ya llenan 1280 px; se enlaza desde el pie.
+- **Currículum fuera de la barra horizontal:** ocho entradas ya llenan 1280 px; se enlaza desde el pie y (Fase B) desde el menú móvil.
 - **Títulos oficiales:** en inglés se conserva la denominación original en español con glosa entre paréntesis (sin traducción oficial confirmada).
 - **Nuevos tokens:** `--background-alt` y `--area-*`; validados por `contrast.test.ts`.
 
@@ -81,7 +81,7 @@ Las pruebas unitarias se ubican junto al código (`*.test.tsx`); `src/test/` con
 - **Verificación del PDF sin dependencias:** `scripts/pdf-text.mjs` (solo `node:zlib`) extrae texto y metadatos; lo usan la guardia y `npm run verify:cv`. Es deliberadamente mínimo (fuentes con `/ToUnicode`, flujos Flate) y de **fallo seguro**: devuelve texto por página y una lista de `limitations` (objetos comprimidos, formularios XObject, filtros no admitidos, fuentes sin mapa Unicode, actualizaciones incrementales), contenido activo, destinos de enlace e imágenes; `pdfIntegrityIssues` (guardia y `verify:cv`) las trata como error, junto con las páginas con menos de 100 caracteres de texto.
 - **Guardia de build:** `scripts/check-publication.mjs` (ESM sin dependencias). La lógica pura `evaluatePublication` se prueba en `src/test/publication.test.ts` (con `.d.mts` para tipos); `postbuild` la ejecuta tras cada build, también en Vercel.
 - **`HeroVisual` acepta `photo`** por prop (por defecto `profile.photo`) para poder probarla sin una foto real.
-- **Currículum y navegación:** la sección conserva el id `resumes` (anclas estables) y sigue fuera de la cabecera; se enlaza desde Contacto y el pie. El Hero ofrece la descarga directa cuando el CV está autorizado.
+- **Currículum y navegación:** la sección conserva el id `resumes` (anclas estables) y sigue fuera de la barra horizontal; se enlaza desde Contacto, el pie y el menú móvil. El Hero ofrece la descarga directa cuando el CV está autorizado.
 
 ## Decisiones de la Fase 5
 
@@ -93,7 +93,7 @@ Las pruebas unitarias se ubican junto al código (`*.test.tsx`); `src/test/` con
 - **Cabecera `fixed` y opaca + espaciador** (antes `sticky` semitransparente): evita saltos de desplazamiento al activar el menú con teclado y permite a axe calcular el contraste. `useFocusNotObscured` cubre el foco oculto en Firefox; ignora `<main>` (contenedor enfocable) y el foco dado por puntero, para no mover la página ni perder clics.
 - **Fuentes precargadas** por un plugin de Vite (`fontPreload`): evita el reajuste de diseño del `font-display: swap`. `useHashScroll` realinea durante 5 s con `ResizeObserver` si el usuario no interactúa.
 - **Playwright en `e2e/`** (excluido de Vitest); navegadores instalados dentro del proyecto (`PLAYWRIGHT_BROWSERS_PATH=0`, `scripts/install-browsers.mjs`). Monitor automático de errores de consola, JS, CSP, red externa y HTTP ≥ 400.
-- **CI** (`.github/workflows/ci.yml`) con acciones fijadas por SHA y sin despliegue; Dependabot con exclusiones por compatibilidad. **No ejecutado** (aún sin push).
+- **CI** (`.github/workflows/ci.yml`) con acciones fijadas por SHA y sin despliegue; Dependabot con exclusiones por compatibilidad. Se ejecuta en GitHub desde la publicación.
 - **Cobertura** con v8 y umbrales mínimos; **Lighthouse** queda fuera del repositorio (ver docs/RENDIMIENTO.md).
 - **Denominaciones genéricas** de sistemas en experiencia, proyectos y documentación; los nombres específicos viven solo en `private/`.
 
@@ -110,3 +110,12 @@ Recomendación (Fase 5): incorporar `vitest-axe` y/o Playwright como dependencia
 ## Pendiente de diseño (fases siguientes)
 
 Tokens y tema (F2), esquema de datos y componentes de sección (F3), persistencia de idioma/tema y selectores (F4), cabeceras de seguridad y `vercel.json` (F5/F7).
+
+## Decisiones de la Fase B
+
+- **Orden del Hero según la pantalla:** `useMediaQuery` (`useSyncExternalStore` sobre `matchMedia`) y
+  `COMPACT_HERO_QUERY` (menos de 768 px, o altura de hasta 500 px por debajo de 1024 px). En pantallas compactas las
+  acciones van tras la presentación; el resto conserva el orden anterior. Se descartó `order` de CSS porque separa el
+  orden visual del orden de lectura.
+- **Dos listas de navegación sin duplicar datos:** `navItems` (barra horizontal) y `extendedNavItems` (añade
+  Currículum; menú móvil y pie). Cada navegación calcula la sección activa sobre sus propios destinos.

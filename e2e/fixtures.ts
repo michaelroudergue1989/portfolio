@@ -80,6 +80,13 @@ export const NAV_ITEMS = [
   { id: 'contact', es: 'Contacto', en: 'Contact' },
 ] as const;
 
+/** El menú móvil añade Currículum antes de Contacto; la barra de escritorio no lo incluye. */
+export const MOBILE_NAV_ITEMS = [
+  ...NAV_ITEMS.slice(0, -1),
+  { id: 'resumes', es: 'Currículum', en: 'Résumé' },
+  ...NAV_ITEMS.slice(-1),
+] as const;
+
 export const SECTION_IDS = [
   'home',
   'stats',

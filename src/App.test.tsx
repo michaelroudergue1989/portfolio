@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '@/App';
-import { footerNavItems, navItems } from '@/data/navigation';
+import { extendedNavItems, navItems } from '@/data/navigation';
 import { SECTION_IDS } from '@/data/sections';
 import i18n from '@/i18n';
 import { initTheme } from '@/lib/theme';
@@ -83,7 +83,7 @@ describe('App (layout, navegación e integración)', () => {
   it('el pie incluye navegación rápida con Currículum y perfiles profesionales', () => {
     render(<App />);
     const quick = within(screen.getByRole('navigation', { name: 'Navegación rápida' }));
-    expect(quick.getAllByRole('link')).toHaveLength(footerNavItems.length);
+    expect(quick.getAllByRole('link')).toHaveLength(extendedNavItems.length);
     expect(quick.getByRole('link', { name: 'Currículum' })).toHaveAttribute('href', '#resumes');
     const footer = within(screen.getByRole('contentinfo'));
     expect(footer.getByRole('link', { name: /LinkedIn/ })).toHaveAttribute(

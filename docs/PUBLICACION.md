@@ -13,17 +13,17 @@ subido, puede ser clonado, copiado o indexado aunque se borre después.
 
 ## 1. Estado actual
 
-| Aspecto                                 | Estado                                                                                           |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Push / despliegue                       | **Ninguno realizado.** Todo el historial es solo local                                           |
-| Estrategia de publicación del historial | **Opción A** (instantánea saneada de un commit, ver sección 5) seleccionada; **aún no creada**   |
-| Remotos del repositorio de desarrollo   | **Ninguno** (`origin` eliminado el 2026-11-25). El remoto de GitHub existe y está vacío          |
-| Repositorio de publicación              | `C:\Proyectos\portfolio-public`: **aún no creado**; será el único con remoto                     |
-| `push.default` local                    | `nothing` (un `git push` sin argumentos falla)                                                   |
-| Árbol de trabajo                        | Sin información pendiente de autorización (verificado con la guardia y la lista privada)         |
-| Historial local                         | **Los commits anteriores contienen información pendiente de autorización.** No publicar `main`   |
-| CV                                      | **Un solo CV público**, habilitado (`public/cv/michael-roudergue-cv.pdf`, autorizado 2026-11-25) |
-| Fotografía                              | No existe (monograma)                                                                            |
+| Aspecto                                 | Estado                                                                                                                                 |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Push / despliegue                       | Publicado en GitHub y desplegado en Vercel (público `ed97d9e`, 2026-11-26)                                                             |
+| Estrategia de publicación del historial | Instantánea saneada (sección 5); las actualizaciones se transfieren con `git archive` sobre el repositorio público, con árbol idéntico |
+| Remotos del repositorio de desarrollo   | **Ninguno** (`origin` eliminado el 2026-11-25)                                                                                         |
+| Repositorio de publicación              | `C:\Proyectos\portfolio-public`: creado; es el único con remoto                                                                        |
+| `push.default` local                    | `nothing` (un `git push` sin argumentos falla)                                                                                         |
+| Árbol de trabajo                        | Sin información pendiente de autorización (verificado con la guardia y la lista privada)                                               |
+| Historial local                         | **Los commits anteriores contienen información pendiente de autorización.** No publicar el historial de desarrollo                     |
+| CV                                      | **Un solo CV público**, habilitado (`public/cv/michael-roudergue-cv.pdf`, autorizado 2026-11-25)                                       |
+| Fotografía                              | No existe (monograma)                                                                                                                  |
 
 ## 2. Inventario de información publicable (en el código)
 
@@ -103,8 +103,7 @@ responsabilidades confirmadas, siempre que no revelen información confidencial.
   los binarios nuevos requieren revisión expresa (4.3).
 - `private/denylist.txt` debe contener frases **exclusivas** de lo no autorizado; no puede incluir
   nombres que ya aparezcan en contenido aprobado.
-- Nada de esto se ha ejecutado en GitHub Actions ni en Vercel: aún no hay push. GitHub Actions **no está
-  verificado** hasta que el workflow se ejecute en Linux.
+- La guardia estructural se ejecuta también en GitHub Actions y en el build de Vercel; la revisión privada no.
 
 ### 4.3 Política explícita de archivos versionables (lista de permitidos)
 
@@ -305,7 +304,7 @@ Después de publicar:
   archivo **privado** (sin remotos; nunca se sube). Así el historial antiguo y `private/` quedan separados.
 - En GitHub: activar Secret scanning y Push protection, Dependabot (alertas y actualizaciones),
   protección de la rama principal y permisos mínimos de Actions. **Ejecutar el workflow en Linux** y
-  revisar su resultado: hasta entonces GitHub Actions no está verificado.
+  revisar su resultado en cada publicación.
 
 ### 5.9 Alternativa descartada: `git worktree`
 
@@ -414,7 +413,7 @@ El inventario detallado de commits y archivos afectados está en `private/invent
 
 - [ ] Autorización expresa del propietario para desplegar.
 - [ ] El remoto contiene solo la rama saneada (verificado con `git ls-remote`).
-- [ ] GitHub Actions: primera ejecución en Linux revisada (aún **no ejecutada**: no está verificado).
+- [ ] GitHub Actions: ejecución del commit publicado revisada.
 - [ ] Proyecto de Vercel: framework Vite, `npm ci`, `npm run build` (ejecuta la guardia), salida `dist`.
 - [ ] Variable `SITE_URL` definida **solo** cuando se conozca el dominio definitivo (https, sin ruta).
 - [ ] Sin otras variables de entorno ni secretos.

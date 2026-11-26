@@ -1,9 +1,9 @@
 # Portafolio profesional — Michael Roudergue Inostroza
 
 Sitio personal de Ingeniería de Software, Liderazgo Técnico y Ciberseguridad.
-**Estado:** Fases 1 a 4 confirmadas; Fase 5 (calidad, seguridad, accesibilidad, rendimiento y preparación para publicación) implementada, pendiente de revisión.
+**Estado:** publicado en https://michaelroudergue.vercel.app/ (Fase A). Fase B aprobada para publicación (ver [docs/PLAN_IMPLEMENTACION.md](docs/PLAN_IMPLEMENTACION.md)).
 
-> **Antes de publicar (no hacer push todavía):** el historial local contiene información que no debe publicarse (la estrategia es publicar una instantánea saneada de un solo commit en un repositorio independiente, `C:\Proyectos\portfolio-public`, aún no creado; este repositorio de desarrollo **no tiene remotos**), el CV público ya está habilitado (`public/cv/`) y no hay fotografía. Seguir [docs/PUBLICACION.md](docs/PUBLICACION.md). GitHub Actions y las cabeceras en producción **no se han verificado**. Antes de generar la instantánea es obligatorio `npm run verify:publication:strict` (el éxito de CI no lo sustituye).
+> **Publicación:** el historial del repositorio de desarrollo contiene información que no debe publicarse; este repositorio de desarrollo **no tiene remotos** y el público se actualiza solo con instantáneas saneadas. Seguir [docs/PUBLICACION.md](docs/PUBLICACION.md). Antes de cada instantánea es obligatorio `npm run verify:publication:strict` (el éxito de CI no lo sustituye).
 
 ## Stack
 
@@ -43,4 +43,4 @@ Node.js >= 22.12 (probado con 24.22.1) y npm.
 
 ## Privacidad
 
-El repositorio será público. No contiene credenciales, documentos privados ni información pendiente de autorización en el árbol de trabajo; el historial local sí requiere saneamiento antes de publicarse (ver PUBLICACION.md).
+El repositorio es público. No contiene credenciales, documentos privados ni información pendiente de autorización (ver PUBLICACION.md).

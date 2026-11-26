@@ -5,7 +5,7 @@ import { certifications } from './certifications';
 import { contactLinks } from './contact';
 import { education } from './education';
 import { experience } from './experience';
-import { footerNavItems, navItems } from './navigation';
+import { extendedNavItems, navItems } from './navigation';
 import { profile } from './profile';
 import { projects } from './projects';
 import { resume } from './resume';
@@ -16,7 +16,7 @@ function allI18nKeys(): string[] {
     profile.titleKey,
     profile.locationKey,
     ...navItems.map((i) => i.labelKey),
-    ...footerNavItems.map((i) => i.labelKey),
+    ...extendedNavItems.map((i) => i.labelKey),
     ...areas.flatMap((a) => [
       a.titleKey,
       a.shortTitleKey,
@@ -132,6 +132,20 @@ describe('integridad de los datos', () => {
     expect(github?.url).toMatch(/^https:\/\/github\.com\/[A-Za-z0-9-]+$/);
     for (const link of contactLinks) expect(parseSafeHttpsUrl(link.url)).not.toBeNull();
     expect(contactLinks.some((c) => c.kind === 'email')).toBe(false);
+  });
+
+  it('el menú móvil y el pie añaden solo Currículum, antes de Contacto', () => {
+    expect(extendedNavItems.map((i) => i.targetId)).toEqual([
+      'home',
+      'about',
+      'experience',
+      'projects',
+      'skills',
+      'education',
+      'certifications',
+      'resumes',
+      'contact',
+    ]);
   });
 
   it('la navegación principal conserva los ocho destinos acordados', () => {

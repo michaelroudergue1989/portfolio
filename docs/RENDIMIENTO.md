@@ -94,3 +94,19 @@ node node_modules/lighthouse/cli/index.js http://localhost:4173/ --only-categori
 - **Pendiente tras el despliegue:** repetir Lighthouse sobre la URL definitiva (móvil y escritorio),
   verificar compresión y caché reales, y revisar Core Web Vitals en el panel de Vercel si se activara
   (no autorizado: sería analítica).
+
+## 8. Fase B: comparación antes y después (2026-11-26)
+
+Lighthouse 13.6.0 sobre dos builds locales (original y Fase B definitiva), alternados, 3 ejecuciones por perfil; medianas.
+
+| Métrica                  | Móvil antes     | Móvil después   | Escritorio antes | Escritorio después |
+| ------------------------ | --------------- | --------------- | ---------------- | ------------------ |
+| Performance              | 98              | 99              | 100              | 100                |
+| Accessibility / BP / SEO | 100 / 100 / 100 | 100 / 100 / 100 | 100 / 100 / 100  | 100 / 100 / 100    |
+| FCP y LCP                | 922 ms          | 916 ms          | 259 ms           | 252 ms             |
+| TBT                      | 162 ms          | 137 ms          | 0 ms             | 0 ms               |
+| CLS                      | 0               | 0               | 0                | 0                  |
+| Peso transferido         | 214,6 kB        | 214,9 kB        | 214,6 kB         | 214,9 kB           |
+
+Las diferencias están dentro de la variación entre ejecuciones: no se atribuye mejora ni empeoramiento. Las cifras no
+son comparables con las de la sección 2 (otro día y condiciones de carga).

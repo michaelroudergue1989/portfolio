@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import type { Page } from '@playwright/test';
-import { DESKTOP, expect, MOBILE, NAV_ITEMS, test } from './fixtures';
+import { DESKTOP, expect, MOBILE, MOBILE_NAV_ITEMS, test } from './fixtures';
 
 /**
  * Accesibilidad automatizada (axe-core, reglas WCAG 2.0/2.1/2.2 A y AA + buenas prácticas) y
@@ -88,7 +88,7 @@ for (const theme of THEMES) {
             return ((l1 ?? 0) + 0.05) / ((l2 ?? 0) + 0.05);
           });
       });
-      expect(ratios.length).toBe(NAV_ITEMS.length);
+      expect(ratios.length).toBe(MOBILE_NAV_ITEMS.length);
       for (const ratio of ratios) expect(ratio).toBeGreaterThanOrEqual(4.5);
     });
   }

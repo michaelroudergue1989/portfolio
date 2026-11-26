@@ -106,8 +106,7 @@ local), `require-trusted-types-for` (no evaluado con React 19: posible mejora fu
 
 ## 6. Integración continua (`.github/workflows/ci.yml`)
 
-Diseñada para ejecutarse cuando se publique el repositorio. **No se ha ejecutado** (no hay push):
-sin evidencia de ejecución real en GitHub Actions.
+Se ejecuta en GitHub con cada push. Última ejecución registrada: `ed97d9e` (2026-11-26), **success**.
 
 - Permisos: `permissions: {}` global y `contents: read` por job. Sin secretos. **Sin despliegue.**
 - Acciones **fijadas por SHA de commit** (`actions/checkout`, `actions/setup-node`,
@@ -123,8 +122,8 @@ sin evidencia de ejecución real en GitHub Actions.
 - **Árbol de trabajo:** sin información pendiente de autorización (guardia estructural + revisión
   privada local). Los nombres específicos de sistemas se sustituyeron por denominaciones genéricas.
 - **Historial local:** contiene commits anteriores con información pendiente de autorización. **No
-  se debe publicar `main`**; el procedimiento seguro (instantánea saneada de un commit, desde un directorio separado) está documentado y **no se ha
-  ejecutado**. `push.default = nothing` está activo en la configuración local. No se reescribió el historial.
+  se debe publicar**; el repositorio público se alimenta solo con instantáneas saneadas desde un directorio
+  separado. `push.default = nothing` está activo en la configuración local. No se reescribió el historial.
 - **Guardia de publicación** por niveles: estructural, PDF, `dist/`, metadatos, contenido autorizado y
   privada (solo local). Cuando la lista privada no está disponible informa la **LIMITACIÓN** y la
   revisión queda **INCOMPLETA**: no se declara completa.
@@ -136,8 +135,7 @@ sin evidencia de ejecución real en GitHub Actions.
 - Los controles de datos personales de la guardia son **heurísticos**: no garantizan identificar todos los datos personales posibles (ver `docs/PUBLICACION.md`, 4.2). El inspector de PDF falla de forma segura ante estructuras que no puede analizar, pero no es un lector PDF completo.
 - **Política de formatos versionables** (lista de permitidos, `docs/PUBLICACION.md` 4.3): los binarios no se inspeccionan por texto y requieren revisión expresa.
 - **Remotos:** el repositorio de desarrollo no tiene remotos (eliminado `origin` el 2026-11-25); el remoto se añade solo en el repositorio de publicación. El éxito de CI **no** sustituye la revisión privada estricta local.
-- Cabeceras no verificadas en producción; HSTS efectiva por confirmar.
-- El CI no se ha ejecutado.
+- Cabeceras de `/` comparadas en producción con `vercel.json` (2026-11-26): coinciden y HSTS está presente. No se usaron escáneres externos.
 - La alcanzabilidad de los enlaces externos (LinkedIn/GitHub) no se prueba (dependen de terceros y
   bloquean automatización); solo se valida su estructura.
 

@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import i18n from '@/i18n';
+import { mockViewport } from '@/test/matchMedia';
 import { disabledResume, enabledResume } from '@/test/resumeHelpers';
-import { Hero } from './Hero';
+import { COMPACT_HERO_QUERY, Hero } from './Hero';
 import { HeroVisual } from './HeroVisual';
 
 const enabledPrimary = enabledResume();
@@ -105,6 +106,87 @@ describe('Hero: CTA principal según disponibilidad del CV', () => {
     render(<Hero item={broken} />);
     expect(screen.queryByRole('link', { name: /Descargar CV/ })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Ver experiencia/ })).toBeInTheDocument();
+  });
+});
+
+/** Orden en el DOM de los bloques del Hero, identificados por su contenido. */
+function blockOrder(container: HTMLElement) {
+  const blocks: [string, Element | null | undefined][] = [
+    ['presentación', screen.getByText(/^Ingeniero en Informática con más de 9 años/)],
+    ['descarga', screen.getByRole('link', { name: /Descargar CV/ })],
+    ['experiencia', screen.getByRole('link', { name: /Ver experiencia/ })],
+    ['linkedin', screen.getByRole('link', { name: /LinkedIn/ })],
+    ['github', screen.getByRole('link', { name: /GitHub/ })],
+    ['capacidades', screen.getByText(/^Experiencia en desarrollo Full Stack/)],
+    ['formación', screen.getByText(/^Diplomado en Gestión/)],
+    ['ubicación', screen.getByText('Región de La Araucanía, Chile')],
+    ['gráfico', container.querySelector('svg[viewBox="0 0 360 360"]')],
+  ];
+  return blocks
+    .sort(([, a], [, b]) =>
+      a && b && a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+    )
+    .map(([name]) => name);
+}
+
+const COMPACT_ORDER = [
+  'presentación',
+  'descarga',
+  'experiencia',
+  'linkedin',
+  'github',
+  'capacidades',
+  'formación',
+  'ubicación',
+  'gráfico',
+];
+const WIDE_ORDER = [
+  'presentación',
+  'capacidades',
+  'formación',
+  'ubicación',
+  'descarga',
+  'experiencia',
+  'linkedin',
+  'github',
+  'gráfico',
+];
+
+describe('Hero: orden según la pantalla', () => {
+  it('en pantallas compactas las acciones van tras la presentación, sin duplicados', () => {
+    mockViewport((query) => query === COMPACT_HERO_QUERY);
+    const { container } = render(<Hero />);
+    expect(blockOrder(container)).toEqual(COMPACT_ORDER);
+    expect(screen.getAllByRole('link')).toHaveLength(4);
+    expect(screen.getAllByRole('img', { name: 'Monograma MR' })).toHaveLength(1);
+  });
+
+  it('en escritorio conserva el orden aprobado', () => {
+    const { container } = render(<Hero />);
+    expect(blockOrder(container)).toEqual(WIDE_ORDER);
+    expect(screen.getAllByRole('link')).toHaveLength(4);
+  });
+
+  it('se reordena al cambiar la ventana sin recrear los enlaces ni perder el foco', () => {
+    const viewport = mockViewport(() => false);
+    const { container, unmount } = render(<Hero />);
+    const download = screen.getByRole('link', { name: /Descargar CV/ });
+    download.focus();
+
+    act(() => {
+      viewport.change((query) => query === COMPACT_HERO_QUERY);
+    });
+    expect(blockOrder(container)).toEqual(COMPACT_ORDER);
+    expect(screen.getByRole('link', { name: /Descargar CV/ })).toBe(download);
+
+    act(() => {
+      viewport.change(() => false);
+    });
+    expect(blockOrder(container)).toEqual(WIDE_ORDER);
+    expect(screen.getByRole('link', { name: /Descargar CV/ })).toBe(download);
+
+    unmount();
+    expect(viewport.listenerCount()).toBe(0);
   });
 });
 

@@ -1,4 +1,4 @@
-import { expect, expectScrolledTo, MOBILE, NAV_ITEMS, test } from './fixtures';
+import { expect, expectScrolledTo, MOBILE, MOBILE_NAV_ITEMS, test } from './fixtures';
 
 const OPEN = 'Abrir menú de navegación';
 const CLOSE = 'Cerrar menú de navegación';
@@ -18,7 +18,7 @@ test.describe('menú móvil (375 px)', () => {
     const close = page.getByRole('button', { name: CLOSE });
     await expect(close).toHaveAttribute('aria-expanded', 'true');
     const menu = page.getByRole('navigation', { name: 'Menú de navegación' });
-    await expect(menu.getByRole('link')).toHaveCount(NAV_ITEMS.length);
+    await expect(menu.getByRole('link')).toHaveCount(MOBILE_NAV_ITEMS.length);
     const controls = await close.getAttribute('aria-controls');
     await expect(page.locator(`[id="${controls ?? ''}"]`)).toBeVisible();
 
@@ -43,7 +43,7 @@ test.describe('menú móvil (375 px)', () => {
     await expect(page.getByRole('button', { name: OPEN })).toBeFocused();
   });
 
-  for (const item of NAV_ITEMS) {
+  for (const item of MOBILE_NAV_ITEMS) {
     test(`elegir "${item.es}" cierra el menú y navega a #${item.id}`, async ({ page }) => {
       await page.goto('/');
       await page.getByRole('button', { name: OPEN }).click();
@@ -74,7 +74,7 @@ test.describe('menú móvil (375 px)', () => {
     await page.keyboard.press('Enter');
     const menu = page.getByRole('navigation', { name: 'Menú de navegación' });
     await expect(menu).toBeVisible();
-    for (const item of NAV_ITEMS) {
+    for (const item of MOBILE_NAV_ITEMS) {
       await page.keyboard.press('Tab');
       await expect(menu.getByRole('link', { name: item.es, exact: true })).toBeFocused();
     }
