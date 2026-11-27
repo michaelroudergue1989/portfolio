@@ -15,7 +15,7 @@ subido, puede ser clonado, copiado o indexado aunque se borre después.
 
 | Aspecto                                 | Estado                                                                                                                                       |
 | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Push / despliegue                       | Fases A y B publicadas en GitHub y Vercel (público `a80cd2a`, 2026-11-26); Fase C autorizada para publicación el 2026-11-27                  |
+| Push / despliegue                       | Fases A, B y C publicadas en GitHub y Vercel (Fase C: público `117913c`, 2026-11-27)                                                         |
 | Estrategia de publicación del historial | Instantánea saneada (sección 5); las actualizaciones se transfieren con `git archive` sobre el repositorio público, con árbol idéntico       |
 | Remotos del repositorio de desarrollo   | **Ninguno** (`origin` eliminado el 2026-11-25)                                                                                               |
 | Repositorio de publicación              | `C:\Proyectos\portfolio-public`: creado; es el único con remoto                                                                              |

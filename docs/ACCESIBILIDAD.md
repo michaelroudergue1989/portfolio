@@ -133,6 +133,7 @@ aparecer. Es emulación, no un dispositivo físico.
 - Desbordamiento horizontal con fuente base de 32 px (anterior a la Fase C).
 - Foco por programa después de usar un puntero.
 - Comportamiento del foco al cambiar de tamaño u orientación.
+- Un toque en la barra abrió el destino en una pestaña nueva (WebKit automatizado, una vez; PRUEBAS.md).
 - Sin pruebas en dispositivos físicos, en Safari real ni con lectores de pantalla.
 
 ## 3. No verificado (pendiente)

@@ -12,7 +12,7 @@
 | 7    | Publicación en GitHub, despliegue en Vercel y auditoría de producción (commit público `db9c2ed`)                                                               | Completada                                                                                                                         |
 | A    | Corrección del salto de scroll al hacer clic y de los clics perdidos en WebKit; pruebas de regresión                                                           | Publicada y verificada en producción (desarrollo `9f7bafa`, público `ed97d9e`), con un riesgo residual en Firefox (ver PRUEBAS.md) |
 | B    | Hero móvil (acciones tras la presentación), Currículum en el menú móvil y documentación                                                                        | Publicada y verificada en producción (desarrollo `447478d`, público `a80cd2a`)                                                     |
-| C    | Barra de accesos directos en móvil; realce de etiquetas; correo profesional dentro del CV; desplazamiento inmediato (corrige historial)                        | Aprobada para publicación (2026-11-27)                                                                                             |
+| C    | Barra de accesos directos en móvil; realce de etiquetas; correo profesional dentro del CV; desplazamiento inmediato (corrige historial)                        | Publicada el 2026-11-27 (público `117913c`)                                                                                        |
 
 Cada fase requiere autorización explícita antes de iniciarse. Commits, push y despliegue solo bajo instrucción del propietario.
 

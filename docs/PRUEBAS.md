@@ -137,6 +137,32 @@ navegadores móviles con barras dinámicas no se han comprobado en un teléfono.
 - **Después:** la prueba original, 180 de 180 (60 por motor); las nuevas, 135 de 135 (5 pasadas en Chromium).
 - Sin comprobar en Chrome ni Edge reales.
 
+### Publicación de la Fase C y fallo de sincronización del CI (2026-11-27)
+
+- Desarrollo `1760b42`; público `117913c`, con el mismo árbol de Git. Vercel: success.
+- E2E antes de publicar: en desarrollo, una primera ejecución con 650 pasan, 17 omitidas y 2 fallos de conexión al
+  servidor local (`NS_ERROR_CONNECTION_REFUSED`, causa no demostrada) y una repetición con 652, 17 y 0; en el
+  repositorio de publicación, 652, 17 y 0. En producción, 651, 17 y 1 (ver el incidente de WebKit abajo).
+- **GitHub Actions (ejecución 46000281626): 651 pasan, 17 omitidas, 1 falla** (Chromium, `motion.spec.ts`):
+  `expect(new Set(positions).size).toBe(1)`, esperado 1 y recibido 0.
+- **Causa:** defecto de la prueba. La página ya había llegado a la sección, pero el evento `scroll`, que el navegador
+  emite en un fotograma posterior, aún no se había registrado. Leyendo justo tras el clic, ocurría en 24 de 100 intentos
+  en Chromium y 3 de 100 en WebKit.
+- **Corrección:** esperar a haber recibido el evento antes de leer. La aserción no cambia y no se modificó la
+  aplicación.
+- **Regresión:** contra la versión anterior con desplazamiento suave falla 15 de 15; aislando solo la comprobación de
+  posiciones, también 15 de 15 (3 a 53 posiciones distintas). Con la versión actual, 180 de 180 en los tres motores y
+  siempre una sola posición. Medido en Windows; Linux lo confirma el CI posterior a este cambio.
+
+**Riesgo residual aceptado por el propietario (2026-11-27), no resuelto:** en producción, con WebKit automatizado, un
+toque en «Experiencia» de la barra inferior abrió el destino en una pestaña nueva y la original no se movió. Una sola
+ocurrencia; después, la prueba original pasó 60 de 60 y 40 toques más navegaron en la misma pestaña. **Sin causa
+demostrada.**
+
+**Hallazgos pendientes:** fallo esporádico de Firefox con Shift+Tab; conexiones rechazadas del servidor local;
+desbordamiento con fuente base de 32 px; foco por programa tras usar un puntero; foco al girar o redimensionar; sin
+pruebas en dispositivos físicos, Safari real ni lectores de pantalla reales.
+
 ### Publicación de la Fase B (2026-11-26)
 
 - Desarrollo `447478d`; público `a80cd2a`, con el mismo árbol de Git.

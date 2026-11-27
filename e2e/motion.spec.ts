@@ -51,6 +51,10 @@ test.describe('movimiento normal', () => {
       .getByRole('link', { name: 'Experiencia', exact: true })
       .click();
     await expectScrolledTo(page, 'experience');
+    // El navegador emite «scroll» en un fotograma posterior: esperar a haberlo recibido.
+    await page.waitForFunction(
+      () => (window as unknown as { positions: number[] }).positions.length > 0,
+    );
     const positions = await page.evaluate(
       () => (window as unknown as { positions: number[] }).positions,
     );
