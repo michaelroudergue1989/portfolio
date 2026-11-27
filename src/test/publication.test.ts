@@ -1,14 +1,20 @@
 import manifest from '@/data/resume.json';
+import cvDataUrl from '../../public/cv/michael-roudergue-cv.pdf?inline';
 import {
   ALLOWED_PROFILE_URLS,
+  AUTHORIZED_CV,
+  authorizedEmailFor,
   evaluatePublication,
   findPersonalData,
   isTextPath,
+  PATTERNS,
   PUBLIC_PDF_AUTHOR,
   TIERS,
   type FileEntry,
   type PublicationInput,
 } from '../../scripts/check-publication.mjs';
+import { inspectPdf } from '../../scripts/pdf-text.mjs';
+import { verifyCv } from '../../scripts/verify-cv.mjs';
 import { buildPdf, DEFAULT_PAGES, type FixtureOptions } from './pdfFixture';
 
 const realResume = manifest as PublicationInput['resume'];
@@ -784,4 +790,94 @@ describe('utilidades', () => {
     expect(isTextPath('fonts/inter.woff2')).toBe(false);
     expect(isTextPath('cv/cv.pdf')).toBe(false);
   });
+});
+
+describe('correo autorizado: solo en el texto del CV público exacto', () => {
+  const content = atob(cvDataUrl.slice(cvDataUrl.indexOf(',') + 1));
+  const toBytes = (value: string) => Uint8Array.from(value, (c) => c.charCodeAt(0));
+  const pdf = inspectPdf(toBytes(content));
+  // La dirección se obtiene del propio PDF: ningún archivo del repositorio la escribe.
+  const found = pdf.text.match(PATTERNS.email) ?? [];
+  const email = found[0] ?? '';
+  const [local = '', domain = ''] = email.split('@');
+  const allowedEmailSha256 = AUTHORIZED_CV.emailSha256;
+  const withPdf = (path: string, body: string) =>
+    run({
+      resume: { ...enabled(), path: `/${path}` },
+      distFiles: [...cleanDist(), { path, head: '%PDF-1.7', content: body, size: body.length }],
+    });
+  const rejected = /dirección de correo\) en el texto del PDF/;
+
+  it('el PDF versionado es exactamente el autorizado', () => {
+    expect(authorizedEmailFor(toBytes(content))).toBe(allowedEmailSha256);
+  });
+
+  it('tiene dos páginas y una sola dirección, como texto de la primera y sin enlace', () => {
+    expect(pdf.pages).toBe(2);
+    expect(found).toHaveLength(1);
+    expect(pdf.pageTexts[0]).toContain(`Región de La Araucanía, Chile | ${email}`);
+    expect(pdf.metadataText).not.toContain('@');
+    expect(pdf.uris).toEqual(ALLOWED_PROFILE_URLS.slice(0, 1));
+    expect(content).not.toContain(email); // ni anotación ni cadena sin comprimir
+    expect(content).not.toMatch(/mailto:|tel:/i);
+  });
+
+  it('la guardia y verify:cv lo aceptan', () => {
+    expect(withPdf(AUTHORIZED_CV.distPath, content).errors).toEqual([]);
+    const result = verifyCv(toBytes(content), { pages: 2, language: 'es', denylist: [] });
+    expect(result.errors).toEqual([]);
+  });
+
+  it('el mismo archivo en otra ruta se rechaza', () => {
+    expect(text(withPdf('cv/otro.pdf', content))).toMatch(rejected);
+  });
+
+  it('si el archivo cambia en un byte, la excepción deja de aplicarse', () => {
+    const changed = `${content} `;
+    expect(authorizedEmailFor(toBytes(changed))).toBeUndefined();
+    expect(text(withPdf(AUTHORIZED_CV.distPath, changed))).toMatch(rejected);
+    const result = verifyCv(toBytes(changed), { pages: 2, language: 'es', denylist: [] });
+    expect(result.errors.join(' ')).toMatch(/dirección de correo\) en el texto extraído/);
+  });
+
+  it('otro PDF con la misma dirección, en la ruta autorizada, se rechaza', () => {
+    const other = buildPdf({
+      pages: [`${DEFAULT_PAGES[0] ?? ''} ${email}`, DEFAULT_PAGES[1] ?? ''],
+    });
+    expect(text(withPdf(AUTHORIZED_CV.distPath, other))).toMatch(rejected);
+  });
+
+  it('la huella admite solo la dirección literal, sin variantes ni otros buzones', () => {
+    expect(findPersonalData(email)).toEqual(['dirección de correo']);
+    expect(findPersonalData(`Chile | ${email}.`, { allowedEmailSha256 })).toEqual([]);
+    for (const variant of [
+      ['otra.persona', domain].join('@'),
+      `x.${email}`,
+      `${email}.evil.test`,
+      [local, `mail.${domain}`].join('@'),
+      [`${local}+etiqueta`, domain].join('@'),
+      email.toUpperCase(),
+      `${email} y ${['segunda', domain].join('@')}`,
+    ]) {
+      expect(findPersonalData(variant, { allowedEmailSha256 }), variant).toEqual([
+        'dirección de correo',
+      ]);
+    }
+  });
+
+  it.each(['README.md', 'docs/PUBLICACION.md', 'src/data/contact.ts', 'src/i18n/locales/es.json'])(
+    'se rechaza en el archivo versionado %s',
+    (path) => {
+      const result = run({ trackedFiles: [{ path, content: email }] });
+      expect(text(result)).toMatch(/dirección de correo\) en archivo versionado/);
+    },
+  );
+
+  it.each(['index.html', 'assets/index-abc.js', 'assets/index-abc.css', 'robots.txt'])(
+    'se rechaza en dist/%s',
+    (path) => {
+      const result = run({ distFiles: [...cleanDist(), { path, content: `x="${email}"` }] });
+      expect(text(result)).toMatch(/dirección de correo\) en dist/);
+    },
+  );
 });

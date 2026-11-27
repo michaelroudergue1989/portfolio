@@ -11,7 +11,12 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { findPersonalData, pdfIntegrityIssues, PUBLIC_PDF_AUTHOR } from './check-publication.mjs';
+import {
+  authorizedEmailFor,
+  findPersonalData,
+  pdfIntegrityIssues,
+  PUBLIC_PDF_AUTHOR,
+} from './check-publication.mjs';
 import { inspectPdf } from './pdf-text.mjs';
 
 /**
@@ -41,7 +46,9 @@ export function verifyCv(input, { pages, language, denylist = null } = {}) {
       'No se pudo extraer texto suficiente: debe ser texto seleccionable (compatible con ATS).',
     );
   }
-  for (const kind of findPersonalData(pdf.text)) {
+  // El correo autorizado solo se admite en el texto visible del archivo exacto autorizado.
+  const allowedEmailSha256 = authorizedEmailFor(buffer);
+  for (const kind of findPersonalData(pdf.text, { allowedEmailSha256 })) {
     errors.push(`Posible dato personal (${kind}) en el texto extraído.`);
   }
   for (const kind of findPersonalData(raw)) {

@@ -19,6 +19,7 @@
  * Esta guardia no contiene ni debe contener términos confidenciales reales.
  */
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -139,6 +140,27 @@ export const ALLOWED_PROFILE_URLS = [
   'https://github.com/michaelroudergue1989',
 ];
 
+/**
+ * Único dato personal adicional autorizado por el propietario (2026-11-26): una dirección de correo,
+ * y solo como texto visible de este archivo exacto del CV público. No se escribe la dirección: se
+ * comparan huellas SHA-256 (evita duplicarla en el repositorio; no la oculta, está en el PDF).
+ * Si el PDF cambia en un solo byte, la excepción deja de aplicarse hasta autorizar la nueva huella.
+ */
+export const AUTHORIZED_CV = Object.freeze({
+  distPath: 'cv/michael-roudergue-cv.pdf',
+  sha256: '789cc891d108382fd7d7373cae6b21f727218b27807100175eb77ca08680cd7c',
+  emailSha256: 'b619091fb8deb59dee220907f9780fe7f14fd39a40330f7612aab5a432a119d4',
+});
+
+const sha256 = (value) => createHash('sha256').update(value).digest('hex');
+
+/**
+ * Huella del correo admitido en el texto de este PDF, o `undefined` si no es el archivo autorizado.
+ * @param {Uint8Array} bytes
+ */
+export const authorizedEmailFor = (bytes) =>
+  sha256(bytes) === AUTHORIZED_CV.sha256 ? AUTHORIZED_CV.emailSha256 : undefined;
+
 /** Hosts que pueden aparecer como texto en dist/ (espacios de nombres, mensajes de librerías, perfiles). */
 export const ALLOWED_DIST_HOSTS = new Set([
   'www.w3.org',
@@ -238,11 +260,13 @@ const hasMatch = (pattern, text) => text.search(pattern) !== -1;
 /**
  * Datos personales / sensibles presentes en un texto (heurística: ver PATTERNS).
  * @param {string} text
+ * @param {{ allowedEmailSha256?: string | undefined }} [options] Huella del único correo admitido.
  * @returns {string[]} tipos distintos encontrados
  */
-export function findPersonalData(text) {
+export function findPersonalData(text, { allowedEmailSha256 } = {}) {
   const found = [];
   for (const match of text.matchAll(PATTERNS.email)) {
+    if (allowedEmailSha256 !== undefined && sha256(match[0]) === allowedEmailSha256) continue;
     const domain = match[0].split('@')[1]?.toLowerCase() ?? '';
     if (!ALLOWED_EMAIL_DOMAINS.has(domain)) found.push('dirección de correo');
   }
@@ -505,7 +529,12 @@ function checkPdfContent(distFiles, allowedPdfs, add) {
       );
       continue;
     }
-    for (const kind of findPersonalData(pdf.text)) {
+    // Única excepción: ruta y contenido exactos del CV autorizado, y solo en su texto visible.
+    const allowedEmailSha256 =
+      path === AUTHORIZED_CV.distPath
+        ? authorizedEmailFor(Buffer.from(entry.content, 'latin1'))
+        : undefined;
+    for (const kind of findPersonalData(pdf.text, { allowedEmailSha256 })) {
       add(TIERS.pdf, `Posible dato personal (${kind}) en el texto del PDF ${path}`);
     }
   }

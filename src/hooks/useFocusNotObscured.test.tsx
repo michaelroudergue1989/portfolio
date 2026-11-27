@@ -212,6 +212,84 @@ describe('useFocusNotObscured', () => {
     });
   });
 
+  describe('barra inferior: el foco no debe quedar debajo', () => {
+    const BAR_TOP = 600;
+
+    function renderWithBar({ barStyle = '' } = {}): void {
+      document.body.innerHTML =
+        '<header></header><main id="main" tabindex="-1"><a id="content" href="#x">contenido</a></main>' +
+        `<nav data-bottom-nav="" style="${barStyle}"><a id="in-bar" href="#home">inicio</a></nav>`;
+      pick('header').getBoundingClientRect = () => rect(0, 65);
+      pick('[data-bottom-nav]').getBoundingClientRect = () => rect(BAR_TOP, 658);
+      renderHook(() => {
+        useFocusNotObscured();
+      });
+    }
+
+    it('desplaza lo mínimo hacia abajo cuando el elemento queda en parte bajo la barra', () => {
+      renderWithBar();
+      focusAndFlush('content', 580); // abajo = 620: 20 px tapados
+      expect(scrollBy).toHaveBeenCalledExactlyOnceWith({ top: 20 + 8, behavior: 'instant' });
+    });
+
+    it('no desplaza un elemento que ya está por encima de la barra', () => {
+      renderWithBar();
+      focusAndFlush('content', BAR_TOP - 40);
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('no desplaza un elemento al lado de la barra, que no lo tapa', () => {
+      renderWithBar();
+      // La barra ocupa de 200 a 600 en horizontal.
+      pick('[data-bottom-nav]').getBoundingClientRect = () =>
+        Object.assign(rect(BAR_TOP, 658), { left: 200, right: 600 });
+      focusAndFlush('content', 580); // ocupa de 0 a 100 en horizontal
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('ignora los enlaces de la propia barra', () => {
+      renderWithBar();
+      focusAndFlush('in-bar', 604);
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('ignora la barra si está oculta (menú móvil abierto)', () => {
+      renderWithBar({ barStyle: 'visibility: hidden' });
+      focusAndFlush('content', 580);
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('mide en cada foco: sin barra (giro o redimensionado) no desplaza', () => {
+      renderWithBar();
+      pick('[data-bottom-nav]').remove();
+      focusAndFlush('content', 580);
+      expect(scrollBy).not.toHaveBeenCalled();
+    });
+
+    it('nunca mete bajo la cabecera un elemento más alto que el espacio libre', () => {
+      renderWithBar();
+      const element = pick('#content');
+      element.getBoundingClientRect = () => rect(90, 700);
+      element.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      vi.advanceTimersByTime(40);
+      expect(scrollBy).toHaveBeenCalledExactlyOnceWith({
+        top: 90 - 65 - 16,
+        behavior: 'instant',
+      });
+    });
+
+    it('con foco dado por puntero no desplaza aunque la barra lo tape', async () => {
+      vi.useRealTimers();
+      renderWithBar();
+      pick('#content').getBoundingClientRect = () => rect(580);
+      const user = userEvent.setup({ delay: null });
+      await user.pointer({ keys: '[MouseLeft>]', target: pick('#content') });
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(scrollBy).not.toHaveBeenCalled();
+      await user.pointer({ keys: '[/MouseLeft]' });
+    });
+  });
+
   it('deja de escuchar al desmontar', () => {
     const { unmount } = renderHook(() => {
       useFocusNotObscured();

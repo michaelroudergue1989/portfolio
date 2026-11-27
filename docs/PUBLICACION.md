@@ -13,17 +13,17 @@ subido, puede ser clonado, copiado o indexado aunque se borre después.
 
 ## 1. Estado actual
 
-| Aspecto                                 | Estado                                                                                                                                 |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Push / despliegue                       | Publicado en GitHub y desplegado en Vercel (público `ed97d9e`, 2026-11-26)                                                             |
-| Estrategia de publicación del historial | Instantánea saneada (sección 5); las actualizaciones se transfieren con `git archive` sobre el repositorio público, con árbol idéntico |
-| Remotos del repositorio de desarrollo   | **Ninguno** (`origin` eliminado el 2026-11-25)                                                                                         |
-| Repositorio de publicación              | `C:\Proyectos\portfolio-public`: creado; es el único con remoto                                                                        |
-| `push.default` local                    | `nothing` (un `git push` sin argumentos falla)                                                                                         |
-| Árbol de trabajo                        | Sin información pendiente de autorización (verificado con la guardia y la lista privada)                                               |
-| Historial local                         | **Los commits anteriores contienen información pendiente de autorización.** No publicar el historial de desarrollo                     |
-| CV                                      | **Un solo CV público**, habilitado (`public/cv/michael-roudergue-cv.pdf`, autorizado 2026-11-25)                                       |
-| Fotografía                              | No existe (monograma)                                                                                                                  |
+| Aspecto                                 | Estado                                                                                                                                       |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Push / despliegue                       | Fases A y B publicadas en GitHub y Vercel (público `a80cd2a`, 2026-11-26); Fase C autorizada para publicación el 2026-11-27                  |
+| Estrategia de publicación del historial | Instantánea saneada (sección 5); las actualizaciones se transfieren con `git archive` sobre el repositorio público, con árbol idéntico       |
+| Remotos del repositorio de desarrollo   | **Ninguno** (`origin` eliminado el 2026-11-25)                                                                                               |
+| Repositorio de publicación              | `C:\Proyectos\portfolio-public`: creado; es el único con remoto                                                                              |
+| `push.default` local                    | `nothing` (un `git push` sin argumentos falla)                                                                                               |
+| Árbol de trabajo                        | Sin información pendiente de autorización (verificado con la guardia y la lista privada)                                                     |
+| Historial local                         | **Los commits anteriores contienen información pendiente de autorización.** No publicar el historial de desarrollo                           |
+| CV                                      | **Un solo CV público**, habilitado (`public/cv/michael-roudergue-cv.pdf`, autorizado 2026-11-25; versión con correo, aprobada el 2026-11-27) |
+| Fotografía                              | No existe (monograma)                                                                                                                        |
 
 ## 2. Inventario de información publicable (en el código)
 
@@ -47,17 +47,15 @@ responsabilidades confirmadas, siempre que no revelen información confidencial.
 
 ## 3. Inventario de información pendiente de autorización
 
-| Elemento                                             | Estado                          | Dónde vive                             |
-| ---------------------------------------------------- | ------------------------------- | -------------------------------------- |
-| Nombres específicos de sistemas y proyectos internos | No publicados                   | `private/` (ignorado por Git y Vercel) |
-| PDF del CV público (versión autorizada)              | Incluido en el repositorio      | `public/cv/` (único PDF versionable)   |
-| Candidato y herramientas de preparación del CV       | No publicados                   | `private/cv-candidato/` (ignorado)     |
-| Otros tres CV (jefatura, desarrollo, ciberseguridad) | Privados; no forman parte       | Fuera del repositorio                  |
-| Fotografía profesional                               | No existe                       | `profile.photo` comentado              |
-| Correo electrónico y teléfono                        | No se publican                  | —                                      |
-| Logos institucionales                                | No se usan                      | —                                      |
-| Enlaces públicos verificables de certificaciones     | No existen                      | Campo `credentialUrl` previsto         |
-| Capturas, repositorios y demos                       | No existen ni están autorizados | —                                      |
+| Elemento                                             | Estado                     | Dónde vive                                  |
+| ---------------------------------------------------- | -------------------------- | ------------------------------------------- |
+| Nombres específicos de sistemas y proyectos internos | No publicados              | `private/` (ignorado por Git y Vercel)      |
+| PDF del CV público (versión autorizada)              | Incluido en el repositorio | `public/cv/` (único PDF versionable)        |
+| Candidato y herramientas de preparación del CV       | No publicados              | `private/cv-candidato/` (ignorado)          |
+| Otros tres CV (jefatura, desarrollo, ciberseguridad) | Privados; no forman parte  | Fuera del repositorio                       |
+| Fotografía profesional                               | No existe                  | `profile.photo` comentado                   |
+| Correo profesional (único autorizado, 2026-11-26)    | Texto del CV público (PDF) | Excepción de la guardia (4.2); no en la web |
+| Teléfono y otros correos                             | No se publican             | —                                           |
 
 ## 4. Controles reproducibles
 
@@ -104,6 +102,14 @@ responsabilidades confirmadas, siempre que no revelen información confidencial.
 - `private/denylist.txt` debe contener frases **exclusivas** de lo no autorizado; no puede incluir
   nombres que ya aparezcan en contenido aprobado.
 - La guardia estructural se ejecuta también en GitHub Actions y en el build de Vercel; la revisión privada no.
+
+**Excepción para el correo profesional.** La guardia admite una sola dirección y solo como **texto visible** del CV
+público. Exige a la vez (`AUTHORIZED_CV` en `scripts/check-publication.mjs`): la ruta `cv/michael-roudergue-cv.pdf`,
+el SHA-256 exacto del archivo y la huella SHA-256 de la dirección (que así no se escribe en el repositorio). En HTML,
+JavaScript, CSS, traducciones, documentación, metadatos, anotaciones, bytes sin comprimir y cualquier otro PDF se sigue
+rechazando, igual que cualquier otro correo. `verify:cv` aplica la misma condición. Pruebas en
+`src/test/publication.test.ts` y `e2e/cv-privacy.spec.ts`. La huella no es una protección: la dirección es legible y
+extraíble desde el PDF publicado.
 
 ### 4.3 Política explícita de archivos versionables (lista de permitidos)
 
@@ -319,19 +325,26 @@ Existe **un solo** documento público (el CV Maestro). Los demás currículums (
 desarrollo, ciberseguridad) son privados, se usan para postulaciones específicas y **no** forman
 parte del repositorio, de `dist/` ni de la interfaz.
 
-**Estado (2026-11-25):** el CV está **habilitado**. El PDF autorizado (2 páginas, español, sin teléfono ni
-correo, con denominaciones genéricas y un único enlace a LinkedIn) es `public/cv/michael-roudergue-cv.pdf`,
-SHA-256 `9c62fd959bbab01a75859850968e96273ddfbe0a92caddacab44e34c21e772b0`. La versión previa sin
-anotación de enlace (SHA-256 `bb6cf764…54b08`, aprobada) y las herramientas de generación quedan en
-`private/cv-candidato/` (ignorado por Git y Vercel). `npm run verify:cv` exige además que **todo destino
-de enlace del PDF sea un perfil permitido** (`ALLOWED_PROFILE_URLS`) y rechaza `mailto:`/`tel:`.
+**Estado (2026-11-26):** el CV está **habilitado**. El PDF autorizado (2 páginas, español, sin teléfono, con el correo
+profesional autorizado en el encabezado, denominaciones genéricas y un único enlace a LinkedIn) es
+`public/cv/michael-roudergue-cv.pdf`, SHA-256 `789cc891d108382fd7d7373cae6b21f727218b27807100175eb77ca08680cd7c`.
+
+| Versión                               | SHA-256                                                            |
+| ------------------------------------- | ------------------------------------------------------------------ |
+| Vigente: añade el correo (2026-11-26) | `789cc891d108382fd7d7373cae6b21f727218b27807100175eb77ca08680cd7c` |
+| Anterior, publicada: sin correo       | `9c62fd959bbab01a75859850968e96273ddfbe0a92caddacab44e34c21e772b0` |
+
+El único cambio es la línea de región de la primera página (objetos 2 y 3 del PDF). La versión anterior, la previa sin
+anotación de enlace (`bb6cf764…54b08`) y las herramientas de generación quedan en `private/cv-candidato/` (ignorado
+por Git y Vercel); la anterior sigue además en el historial público. `npm run verify:cv` exige que **todo destino de
+enlace del PDF sea un perfil permitido** (`ALLOWED_PROFILE_URLS`) y rechaza `mailto:`/`tel:`.
 
 Para sustituir el documento por una versión nueva (o publicar uno por primera vez):
 
 1. **Autorización expresa** del propietario, después de revisar el PDF candidato completo (ambas páginas).
 2. Ejecutar la verificación automática sobre el candidato (solo lectura):
    `npm run verify:cv -- private/cv-candidato/michael-roudergue-cv.pdf`. Comprueba cabecera y tamaño,
-   número de páginas (contra `src/data/resume.json`), **texto extraíble** (ATS), ausencia de correo,
+   número de páginas (contra `src/data/resume.json`), **texto extraíble** (ATS), ausencia de correo (salvo la excepción de 4.2),
    teléfono, RUT y rutas locales **en el texto y en los metadatos**, frases de la lista privada,
    texto suficiente en **cada página**, estructuras no analizables y contenido activo (fallo seguro), enlaces
    solo a perfiles permitidos y sin `mailto:`/`tel:`, autor/software y fechas de plantilla en los metadatos, e idioma del
@@ -364,7 +377,7 @@ Para retirar el CV: `"available": false` y **borrar** el PDF de `public/cv/`.
 ## 8. Revisión de datos personales
 
 - Publicados: nombre completo, título, región y perfiles de LinkedIn y GitHub.
-- No publicados: correo, teléfono, domicilio, RUT, fecha de nacimiento, fotografía.
+- No publicados: teléfono, domicilio, RUT, fecha de nacimiento, fotografía; ningún correo en la web (uno, autorizado, dentro del CV).
 - Identidad de Git: `git log --format="%an <%ae>" | Sort-Object -Unique` solo debe mostrar el correo
   `noreply` de GitHub.
 - `index.html` y metadatos: sin datos personales adicionales; sin JSON-LD (decisión deliberada).

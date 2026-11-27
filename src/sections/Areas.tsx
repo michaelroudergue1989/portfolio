@@ -62,7 +62,9 @@ export function Areas() {
                   ))}
                   {area.technologies.map((tech) => (
                     <li key={tech}>
-                      <Badge mono>{tech}</Badge>
+                      <Badge mono tech>
+                        {tech}
+                      </Badge>
                     </li>
                   ))}
                 </ul>

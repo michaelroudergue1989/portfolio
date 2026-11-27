@@ -36,7 +36,7 @@ menú abierto se debían a la cabecera semitransparente; se resolvió con fondo 
 | Foco visible (contorno de 3 px) en todos los elementos enfocables                                                                                                                                                       | Aprobada (Chromium, Firefox)                                                 |
 | Foco no oculto por la cabecera fija, hacia delante y hacia atrás (Shift+Tab) (2.4.11)                                                                                                                                   | Aprobada (Chromium, Firefox)                                                 |
 | Menú móvil: `aria-expanded`/`aria-controls`, Escape + retorno del foco, cierre al elegir/clic fuera/salir del foco                                                                                                      | Aprobada (3 motores; Tab solo Chromium/Firefox)                              |
-| `prefers-reduced-motion`: sin scroll suave ni transiciones                                                                                                                                                              | Aprobada                                                                     |
+| `prefers-reduced-motion`: sin transiciones; desplazamiento inmediato (para todos)                                                                                                                                       | Aprobada                                                                     |
 | Modo de colores forzados (`forced-colors: active`): controles operables                                                                                                                                                 | Aprobada (operabilidad; sin revisión visual)                                 |
 | Contraste de tokens (texto ≥ 4,5:1; componentes y foco ≥ 3:1; insignias ≥ 5:1) en ambos temas                                                                                                                           | Aprobada (prueba unitaria `contrast.test.ts`; margen mínimo de texto 5,38:1) |
 | Contraste de los enlaces del menú móvil (colores computados)                                                                                                                                                            | Aprobada (≥ 4,5:1)                                                           |
@@ -99,6 +99,42 @@ Fase A. Las comprobaciones posteriores pasaron y el riesgo residual fue aceptado
 - Al cruzar el punto de cambio (giro o redimensionado) los bloques se reordenan sin recrear los enlaces; el
   comportamiento del foco enfocado en ese instante **no se probó en navegadores reales**.
 
+### Fase C: barra de accesos directos en móvil
+
+- `<nav>` propio («Accesos directos» / «Shortcuts») con cinco enlaces; el nombre accesible es el texto visible y los
+  iconos son decorativos. Sin `tablist` ni `tab`. `aria-current="location"` solo si la sección detectada tiene acceso.
+- Va al final del orden de tabulación. Cuando no corresponde mostrarla no se monta; con el menú abierto queda
+  `visibility: hidden` (fuera del foco y del árbol de accesibilidad) para no tapar ni duplicar controles.
+- Áreas de al menos 48 px de alto y 52 px de ancho en las medidas; fondo opaco con los tokens ya validados.
+- **Foco no oculto (2.4.11):** `scroll-padding-bottom` más `useFocusNotObscured`, que ahora también destapa el foco
+  cubierto por la barra (solo teclado o programa, nunca puntero ni `<main>`).
+- **Foco por programa tras usar un puntero:** sigue sin ajustarse hasta la siguiente tecla. La aplicación no tiene
+  ningún camino que lo provoque (el único foco por programa es Escape en el menú, que es de teclado). No se cambió.
+- **Cambio de tamaño con un elemento enfocado:** no se reajusta solo, para no mover la página sin acción del usuario.
+- **Fuente base grande del navegador:** las consultas usan `em`, así que la barra se retira cuando no cabe.
+- **Hallazgo anterior a esta fase:** con fuente base de 32 px hay desbordamiento horizontal de 33 a 138 px en anchos
+  de 360 a 450 px (igual antes y después de la barra). Pendiente de tratar.
+- axe sin violaciones en la matriz existente, que a 375 px incluye la barra. **No se probó con lectores de pantalla.**
+
+### Etiquetas de tecnologías (2026-11-26)
+
+- Las etiquetas siguen siendo texto: sin foco, sin rol y sin cursor de acción. El realce no aporta información.
+- axe sin violaciones en la matriz existente. **No se probó con lectores de pantalla.**
+- El CV conserva texto seleccionable y estructura etiquetada; su accesibilidad no se ha auditado.
+
+### Comprobación manual del propietario (emulador responsive de Chrome)
+
+La barra aparece, desaparece al abrir el menú, el pie se ve completo, a 752 × 320 queda oculta y a 752 × 726 vuelve a
+aparecer. Es emulación, no un dispositivo físico.
+
+### Pendientes conocidos (sin corregir)
+
+- Fallo esporádico de Firefox de la Fase A, sin causa determinada.
+- Desbordamiento horizontal con fuente base de 32 px (anterior a la Fase C).
+- Foco por programa después de usar un puntero.
+- Comportamiento del foco al cambiar de tamaño u orientación.
+- Sin pruebas en dispositivos físicos, en Safari real ni con lectores de pantalla.
+
 ## 3. No verificado (pendiente)
 
 - **Lectores de pantalla:** NVDA, JAWS, VoiceOver (macOS/iOS), TalkBack. No se probó ninguno.
@@ -121,7 +157,8 @@ Fase A. Las comprobaciones posteriores pasaron y el riesgo residual fue aceptado
   desplazaba la página al activar sus controles con teclado, y con fondo semitransparente axe no podía calcular
   el contraste.
 - **Menú móvil como disclosure** (no modal): sin atrapar el foco; se cierra con Escape, clic fuera o al salir.
-- **Sin animaciones decorativas**; con `prefers-reduced-motion` se anulan transiciones y scroll suave.
+- **Sin animaciones decorativas**; con `prefers-reduced-motion` se anulan las transiciones. El desplazamiento entre
+  secciones es inmediato para todos (se retiró el suave por un defecto del historial: PRUEBAS.md).
 - **Colores:** tokens validados por prueba; el color nunca es el único portador de significado en las áreas.
 
 ## 5. Cómo reproducir y ampliar

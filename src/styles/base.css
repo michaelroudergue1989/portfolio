@@ -14,6 +14,11 @@
     scroll-padding-top: calc(var(--header-height) + 1rem);
   }
 
+  /* Solo mientras la barra inferior existe: sin ella no se reserva espacio. */
+  html:has([data-bottom-nav]) {
+    scroll-padding-bottom: var(--bottom-nav-space);
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
@@ -33,11 +38,10 @@
     color: var(--foreground);
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-    }
-  }
+  /*
+   * Sin desplazamiento suave global: en Chromium, un «adelante» durante la animación de «atrás»
+   * dejaba la URL en una sección y la página en otra (e2e/history.spec.ts).
+   */
 
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -56,4 +60,32 @@
   transition-property: color, background-color, border-color, box-shadow, transform;
   transition-duration: var(--duration-base);
   transition-timing-function: var(--ease-standard);
+}
+
+/*
+ * Etiquetas de tecnologías: realce al pasar el puntero. Solo con puntero fino y capacidad de
+ * «hover»; `transform` no cambia el tamaño ni mueve a las vecinas. Sin capa para prevalecer sobre
+ * las utilidades de color de la etiqueta.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .tech-badge {
+    transition:
+      transform 160ms ease,
+      border-color 160ms ease;
+  }
+
+  .tech-badge:hover {
+    transform: scale(1.07);
+    border-color: var(--primary);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-badge {
+    transition: none;
+  }
+
+  .tech-badge:hover {
+    transform: none;
+  }
 }

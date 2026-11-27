@@ -78,15 +78,15 @@ Avanzado: Full-stack, PHP, JavaScript, Tech Lead. Intermedio: React, NestJS, Pro
 
 ## Contenido pendiente de autorización
 
-| Elemento                                         | Estado                                                 |
-| ------------------------------------------------ | ------------------------------------------------------ |
-| Proyectos con nombre (trabajo para terceros)     | Fuera del repositorio (`private/`); ver PUBLICACION.md |
-| Archivos de los 4 CV                             | No disponibles; no se publican hasta autorización      |
-| Fotografía profesional                           | No existe; `profile.photo` comentado                   |
-| Correo electrónico y teléfono                    | No se publican                                         |
-| Logos institucionales                            | No se usan (revisar condiciones)                       |
-| Enlaces públicos verificables de certificaciones | No existen; `credentialUrl` previsto en el modelo      |
-| Capturas, repositorios y demos de proyectos      | No existen ni están autorizados                        |
+| Elemento                                         | Estado                                                                                                                                        |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Proyectos con nombre (trabajo para terceros)     | Fuera del repositorio (`private/`); ver PUBLICACION.md                                                                                        |
+| Archivos de los 4 CV                             | No disponibles; no se publican hasta autorización                                                                                             |
+| Fotografía profesional                           | No existe; `profile.photo` comentado                                                                                                          |
+| Correo electrónico y teléfono                    | No se publican en la web. El propietario autorizó (2026-11-26) un único correo profesional, solo como texto dentro del CV público descargable |
+| Logos institucionales                            | No se usan (revisar condiciones)                                                                                                              |
+| Enlaces públicos verificables de certificaciones | No existen; `credentialUrl` previsto en el modelo                                                                                             |
+| Capturas, repositorios y demos de proyectos      | No existen ni están autorizados                                                                                                               |
 
 ## Restricciones de contenido
 

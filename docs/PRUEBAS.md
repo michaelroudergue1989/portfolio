@@ -1,7 +1,7 @@
 # Pruebas y calidad
 
 Todo lo siguiente es reproducible desde el repositorio salvo lo indicado como "externo".
-Resultados medidos el 2026-11-24 (Fase 5) y actualizados el 2026-11-26 (Fase B) en Windows 11, Node 24.22.1, npm 11.19.1, 20 procesadores lógicos.
+Resultados medidos el 2026-11-24 (Fase 5) y actualizados el 2026-11-26 (Fase C) en Windows 11, Node 24.22.1, npm 11.19.1, 20 procesadores lógicos.
 
 ## 1. Comandos
 
@@ -39,8 +39,8 @@ evidencia medible para la auditoría. No se añadió ninguna dependencia de prod
 
 ### Unitarias e integración (Vitest)
 
-- **26 archivos, 394 pruebas, todas pasan** (2026-11-26, Fase B).
-- Cobertura: **líneas 99,4 %**, sentencias 98,36 %, funciones 99,24 %, ramas 90,13 %.
+- **28 archivos, 436 pruebas, todas pasan** (2026-11-26).
+- Cobertura: **líneas 99,45 %**, sentencias 98,5 %, funciones 99,29 %, ramas 90,94 %.
   Umbrales mínimos en `vitest.config.ts`: líneas/sentencias/funciones 95 %, ramas 80 %.
   Alcance: `src/` (los scripts de `scripts/` se prueban mediante sus funciones puras, pero no se
   incluyen en el informe de cobertura).
@@ -51,17 +51,18 @@ evidencia medible para la auditoría. No se añadió ninguna dependencia de prod
 
 ### E2E (Playwright)
 
-| Motor     | Pruebas listadas | Resultado                                                                |
-| --------- | ---------------- | ------------------------------------------------------------------------ |
-| Chromium  | 152              | todas pasan                                                              |
-| Firefox   | 128              | 127 pasan, 1 omitida                                                     |
-| WebKit    | 128              | 119 pasan, 9 omitidas                                                    |
-| **Total** | **408**          | **398 pasan, 10 omitidas, 0 fallan** (ejecución completa del 2026-11-26) |
+| Motor     | Pruebas listadas | Resultado                                                                                                                                              |
+| --------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Chromium  | 239              | todas pasan                                                                                                                                            |
+| Firefox   | 215              | 214 pasan, 1 omitida                                                                                                                                   |
+| WebKit    | 215              | 199 pasan, 16 omitidas                                                                                                                                 |
+| **Total** | **669**          | **652 pasan, 17 omitidas, 0 fallan** (ejecución completa del 2026-11-26, sin reintentos). La anterior a la corrección: 570 pasan, 17 omitidas, 1 falla |
 
-Omitidas (10) y motivo:
+Omitidas (17) y motivo:
 
-- Recorrido con **Tab por enlaces** en WebKit (5 en navegación, 1 en menú móvil, 1 en foco por teclado y 1 en el Hero
-  móvil): WebKit/Safari no enfoca enlaces con Tab por defecto (requiere Option+Tab o un ajuste del sistema).
+- Recorrido con **Tab por enlaces** en WebKit (5 en navegación, 1 en menú móvil, 1 en foco por teclado, 1 en el Hero
+  móvil y 7 en la barra inferior): WebKit/Safari no enfoca enlaces con Tab por defecto (requiere Option+Tab o un ajuste
+  del sistema).
 - Métricas de rendimiento en Firefox y WebKit (2): se miden solo en Chromium.
 
 Cobertura funcional de los E2E (`e2e/`):
@@ -74,14 +75,73 @@ Cobertura funcional de los E2E (`e2e/`):
 | `preferences.spec.ts`       | Cambio de idioma, persistencia, idioma inicial por navegador, tema, persistencia, sin parpadeo, tema del sistema, valores guardados inválidos                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `links.spec.ts`             | LinkedIn/GitHub (atributos seguros), https, sin `mailto`/`tel`/descargas/formularios, **un único currículum** disponible (descarga y visualización con el mismo PDF; único enlace a archivo permitido), sin referencias a los otros tres, CTA "Descargar CV" + "Ver experiencia", traducción                                                                                                                                                                                                                                                                                           |
 | `resume-pdf.spec.ts`        | **PDF real**: `dist/` idéntico a `public/` (SHA-256), HTTP 200, `application/pdf`, cabeceras/CSP, `verifyCv` sobre el archivo servido, descarga efectiva (Hero y sección, hash íntegro), pestaña nueva de «Visualizar CV», navegación a Currículum, ES/EN × claro/oscuro × escritorio/móvil sin errores de consola, CSP ni desbordamiento. El **visor** de PDF no existe en modo headless: se verificó a mano con Chromium y Firefox con ventana (el PDF se muestra con la CSP completa; Chromium solicita `/favicon.ico` en la pestaña del PDF y recibe 404, sin efecto en la página) |
-| `motion.spec.ts`            | `prefers-reduced-motion`: sin scroll suave ni transiciones; movimiento normal                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `motion.spec.ts`            | `prefers-reduced-motion` sin transiciones; con movimiento normal, el desplazamiento entre secciones también es inmediato                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `history.spec.ts`           | Atrás y adelante (con retardos de 0 a 900 ms), botones del navegador seguidos, atrás tras pulsar un enlace y menú hamburguesa: URL, hash, `scrollY`, sección visible y activa; escritorio y móvil                                                                                                                                                                                                                                                                                                                                                                                      |
 | `hero-mobile.spec.ts`       | «Descargar CV» en el primer pantallazo (320–414 px y horizontal), orden del DOM, 44 px, sin desbordamiento, escritorio y tableta sin cambios de orden, giro de pantalla, Currículum en el menú (ES/EN, claro/oscuro, sin descarga)                                                                                                                                                                                                                                                                                                                                                     |
+| `bottom-nav.spec.ts`        | Barra móvil: ventanas donde aparece o no (incluidos los límites), áreas y etiquetas, Descargar CV libre, cinco accesos (ratón y toque), sección activa, hash, recarga, historial, idioma y tema, menú, teclado y foco no oculto, pie, pulsación sobre un enlace medio tapado                                                                                                                                                                                                                                                                                                           |
+| `cv-privacy.spec.ts`        | La página y sus recursos no contienen correos ni `mailto:`; el CV servido es el archivo autorizado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `tech-badges.spec.ts`       | Escala y borde con puntero fino, maquetación y desplazamiento intactos, sin recortes, movimiento reducido, toque, sin foco                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `scroll-regression.spec.ts` | Clic (con y sin pulsación) y toque en contenido sin mover la página; enlaces y botones de `<main>` desplazado; enlace medio tapado; foco por teclado                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `a11y.spec.ts`              | axe + comprobaciones propias, incluido el **idioma de las partes** (WCAG 3.1.2; ver `docs/ACCESIBILIDAD.md`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `performance.spec.ts`       | CLS < 0,1, FCP < 1,8 s, LCP < 2,5 s, ≤ 8 peticiones (Chromium)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 Cada prueba incluye un **monitor automático** que falla si hay: errores de JavaScript, errores de
 consola, peticiones a orígenes externos, respuestas HTTP ≥ 400 del propio sitio o violaciones de CSP.
+
+### Fase C: barra de accesos directos (2026-11-26; aprobada para publicación el 2026-11-27)
+
+**Mediciones** en Chromium, Firefox y WebKit (26 ventanas × ES/EN × claro/oscuro, antes y después): barra de 58 px con
+8 px de margen y 72 px reservados al final; accesos de al menos 48 px de alto; las cinco etiquetas caben a 320 px sin
+abreviar; sin desbordamientos; **Descargar CV no deja de verse en ninguna ventana**; el pie queda completo por encima de
+la barra. En el primer pantallazo la barra cubre en parte «Ver experiencia» (320×550/568, 360×501) o LinkedIn y GitHub
+(además 360×560, 375×553): se alcanzan desplazando.
+
+**Escritorio y tableta:** capturas de página completa idénticas byte a byte en Chromium. En Firefox y WebKit una primera
+pasada dio 18 y 19 de 20; repetida sin desplazar la página antes de capturar dio 20 de 20 en ambos. La causa probable es
+el resaltado de la navegación aún sin actualizar; no se demostró.
+
+**Foco.** Antes de tocar `useFocusNotObscured` se reprodujo el defecto: en Firefox a 320×568, «Ver experiencia»
+recibía el foco con 12 px bajo la barra (10 de 10 intentos). La prueba E2E correspondiente falla con el hook anterior y
+pasa con el nuevo.
+
+**Pruebas corregidas durante la fase.** La primera suite completa tuvo 2 fallos (Chromium y WebKit) en una prueba nueva
+que suponía que, al cambiar de idioma, seguía arriba la misma sección. El texto se acorta, esos motores anclan en la
+sección anterior (igual que en la versión sin barra) y la barra reflejaba lo correcto. La prueba compara ahora con la
+sección que indica la geometría.
+
+**Límites:** todo es emulado; sin dispositivos físicos, Safari real ni lectores de pantalla. Las consultas de altura en
+navegadores móviles con barras dinámicas no se han comprobado en un teléfono.
+
+### Correo dentro del CV y realce de etiquetas (2026-11-26; aprobados para publicación el 2026-11-27)
+
+- El correo se retiró de la web antes de publicarse: se eliminaron 21 pruebas unitarias y 14 E2E por navegador de esa
+  funcionalidad. Se añadieron 15 unitarias y 2 E2E por navegador sobre el PDF y la privacidad.
+- Comprobaciones manuales del propietario con el emulador responsive de Chrome (ver ACCESIBILIDAD.md). **No hubo
+  prueba en un teléfono físico.**
+
+**Defecto de «atrás» y «adelante», corregido (2026-11-26).**
+
+- **Síntoma:** si «adelante» llegaba mientras «atrás» aún se desplazaba, la URL quedaba en el destino nuevo y la página y
+  la navegación activa en el anterior, de forma persistente.
+- **Anterior a la Fase C:** reproducido en el Chromium de Playwright, en la versión entonces publicada (Fase B, sin
+  barra), escritorio y móvil. No en Firefox, WebKit ni con movimiento reducido.
+- **Causa:** `scroll-behavior: smooth` global en `src/styles/base.css` (desde la Fase 2): la animación en curso no se
+  cancela. Una página mínima sin React lo reproducía con solo esa regla.
+- **Decisión autorizada por el propietario:** eliminar el desplazamiento suave global. No se sustituyó por JavaScript. Las
+  variantes que conservaban la animación se descartaron al medirlas (seguían fallando o introducían otro fallo).
+- **Prueba cambiada:** `motion.spec.ts` exigía desplazamiento suave, requisito retirado; ahora exige que sea inmediato.
+  La prueba que detectó el defecto no se modificó.
+- **Pruebas nuevas:** `history.spec.ts`. Contra la implementación anterior fallan 15 de 27 en Chromium (15, 15 y 16 en
+  tres pasadas) y la de movimiento en los tres motores; con la corrección pasan todas. La segunda orden debe lanzarse sin
+  ninguna evaluación pendiente: de otro modo el defecto se manifestaba solo a veces.
+- **Después:** la prueba original, 180 de 180 (60 por motor); las nuevas, 135 de 135 (5 pasadas en Chromium).
+- Sin comprobar en Chrome ni Edge reales.
+
+### Publicación de la Fase B (2026-11-26)
+
+- Desarrollo `447478d`; público `a80cd2a`, con el mismo árbol de Git.
+- GitHub Actions: **success** al primer intento. Vercel: **success**.
+- Regresión en producción, sin reintentos: **398 aprobadas, 10 omitidas, 0 fallidas**.
 
 ### Fase B: Hero móvil y Currículum en el menú (2026-11-26)
 

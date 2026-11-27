@@ -101,15 +101,16 @@ Margen mínimo de texto: 5,38:1 (`area-security` sobre `surface` en oscuro). Cua
 
 ## Componentes
 
-| Componente                                                                            | Notas                                                                                                                                                                                     |
-| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Button` (+ `buttonStyles`)                                                           | primary/secondary/ghost, md/lg; objetivo ≥ 44 px; deshabilitado con opacidad 60 %                                                                                                         |
-| `Card`, `Badge` (variantes neutral/primary/accent + 3 áreas), `Container`, `Monogram` | Primitivas                                                                                                                                                                                |
-| `Section` (`tone="default\|alt"`), `SectionHeading`                                   | `<section aria-labelledby>`; h2 + eyebrow + descripción                                                                                                                                   |
-| `ExternalLink`                                                                        | Solo `https:` sin credenciales; `rel="noopener noreferrer"`; aviso de pestaña nueva para lectores de pantalla                                                                             |
-| `ThemeToggle`, `LanguageSelector`, `MobileMenu`, `DesktopNav`, `NavLinks`             | Navegación con `aria-current="location"` en la sección activa                                                                                                                             |
-| `Header`, `Footer`, `Layout`                                                          | Skip link; pie con resumen de áreas, navegación rápida y perfiles                                                                                                                         |
-| `HeroVisual`                                                                          | Trama de puntos + tres arcos (azul/verde azulado/violeta); muestra `profile.photo` si existe, si no el monograma. Solo desde `lg`: en pantallas menores queda el monograma de la cabecera |
+| Componente                                                                                                                           | Notas                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button` (+ `buttonStyles`)                                                                                                          | primary/secondary/ghost, md/lg; objetivo ≥ 44 px; deshabilitado con opacidad 60 %                                                                                                         |
+| `Card`, `Badge` (variantes neutral/primary/accent + 3 áreas; `tech` realza tecnologías al pasar el puntero), `Container`, `Monogram` | Primitivas                                                                                                                                                                                |
+| `Section` (`tone="default\|alt"`), `SectionHeading`                                                                                  | `<section aria-labelledby>`; h2 + eyebrow + descripción                                                                                                                                   |
+| `ExternalLink`                                                                                                                       | Solo `https:` sin credenciales; `rel="noopener noreferrer"`; aviso de pestaña nueva para lectores de pantalla                                                                             |
+| `ThemeToggle`, `LanguageSelector`, `MobileMenu`, `DesktopNav`, `NavLinks`                                                            | Navegación con `aria-current="location"` en la sección activa                                                                                                                             |
+| `Header`, `Footer`, `Layout`                                                                                                         | Skip link; pie con resumen de áreas, navegación rápida y perfiles                                                                                                                         |
+| `BottomNav`                                                                                                                          | Barra flotante móvil: cinco accesos con icono y etiqueta, borde redondeado, activo con `primary-soft`; 58 px de alto                                                                      |
+| `HeroVisual`                                                                                                                         | Trama de puntos + tres arcos (azul/verde azulado/violeta); muestra `profile.photo` si existe, si no el monograma. Solo desde `lg`: en pantallas menores queda el monograma de la cabecera |
 
 ### Secciones
 
@@ -134,7 +135,8 @@ Margen mínimo de texto: 5,38:1 (`area-security` sobre `surface` en oscuro). Cua
 - **Acceso directo** (`/#experience`): `useHashScroll` desplaza tras montar la página.
 - **Menú móvil:** nueve entradas (las ocho más Currículum, que lleva a `#resumes` sin descargar); se cierra al elegir sección, con Escape, clic fuera o al salir el foco.
 - Barra horizontal desde `xl` (1280 px). **Currículum** no está en la barra (no cabría); se enlaza desde el menú móvil y el pie.
-- `prefers-reduced-motion`: sin scroll suave ni transiciones.
+- **Barra inferior (móvil):** Inicio, Experiencia, Proyectos, CV (`#resumes`, sin descargar) y Contacto. Complementa al menú; en secciones sin acceso no marca ninguno. Visibilidad en ARQUITECTURA.md (Fase C).
+- Desplazamiento entre secciones inmediato (sin animación). `prefers-reduced-motion`: sin transiciones.
 
 ## Criterios de accesibilidad (objetivo WCAG 2.2 AA)
 

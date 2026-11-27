@@ -17,6 +17,8 @@
     "education": "Formación",
     "certifications": "Certificaciones",
     "resumes": "Currículum",
+    "resumesShort": "CV",
+    "bottomLabel": "Accesos directos",
     "contact": "Contacto"
   },
   "theme": {

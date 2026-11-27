@@ -9,6 +9,8 @@ interface BadgeProps {
   variant?: BadgeVariant;
   /** Fuente monoespaciada para nombres técnicos (tecnologías, normas). */
   mono?: boolean;
+  /** Etiqueta de una tecnología: realce al pasar el puntero (informativa, no es un control). */
+  tech?: boolean;
   className?: string;
 }
 
@@ -21,12 +23,19 @@ const variants: Record<BadgeVariant, string> = {
   security: 'bg-area-security-soft text-area-security border-transparent',
 };
 
-export function Badge({ children, variant = 'neutral', mono = false, className }: BadgeProps) {
+export function Badge({
+  children,
+  variant = 'neutral',
+  mono = false,
+  tech = false,
+  className,
+}: BadgeProps) {
   return (
     <span
       className={cx(
         'inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium',
         mono && 'font-mono',
+        tech && 'tech-badge',
         variants[variant],
         className,
       )}

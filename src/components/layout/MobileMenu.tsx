@@ -11,12 +11,23 @@ import { NavLinks } from './NavLinks';
  * - Escape cierra y devuelve el foco al botón.
  * - Se cierra al activar un enlace, al hacer clic fuera o al sacar el foco del menú.
  */
-export function MobileMenu({ activeId = null }: { activeId?: string | null }) {
+export function MobileMenu({
+  activeId = null,
+  onOpenChange,
+}: {
+  activeId?: string | null;
+  /** Avisa al abrir y cerrar (la barra inferior se oculta mientras el menú está abierto). */
+  onOpenChange?: ((open: boolean) => void) | undefined;
+}) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
+
+  useEffect(() => {
+    onOpenChange?.(open);
+  }, [open, onOpenChange]);
 
   useEffect(() => {
     if (!open) return;

@@ -106,7 +106,7 @@ local), `require-trusted-types-for` (no evaluado con React 19: posible mejora fu
 
 ## 6. Integración continua (`.github/workflows/ci.yml`)
 
-Se ejecuta en GitHub con cada push. Última ejecución registrada: `ed97d9e` (2026-11-26), **success**.
+Se ejecuta en GitHub con cada push. Última ejecución registrada: `a80cd2a` (2026-11-26), **success**.
 
 - Permisos: `permissions: {}` global y `contents: read` por job. Sin secretos. **Sin despliegue.**
 - Acciones **fijadas por SHA de commit** (`actions/checkout`, `actions/setup-node`,
@@ -149,3 +149,10 @@ Se ejecuta en GitHub con cada push. Última ejecución registrada: `ed97d9e` (20
    y que las rutas `/cv/*.pdf` no existan mientras no se autoricen.
 5. Revisar la protección de despliegues de Vercel y la visibilidad de las URL de vista previa.
 6. En GitHub: Secret scanning, Push protection, Dependabot y protección de la rama principal.
+
+## 10. Correo dentro del CV (2026-11-26)
+
+- Por el riesgo de recolección automatizada, el correo **no** se muestra en la web (no hay texto, `mailto:` ni botón de
+  copiar): solo es texto del CV descargable.
+- Sigue siendo público: quien descargue el PDF, o un recolector que lo procese, puede extraerlo.
+- La excepción de la guardia está atada al archivo exacto (PUBLICACION.md, 4.2). No cambian la CSP ni las dependencias.

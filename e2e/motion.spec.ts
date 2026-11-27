@@ -33,15 +33,27 @@ test.describe('movimiento reducido', () => {
 test.describe('movimiento normal', () => {
   test.use({ viewport: DESKTOP, reducedMotion: 'no-preference' });
 
-  test('usa desplazamiento suave y la navegación sigue llegando al destino', async ({ page }) => {
+  test('el desplazamiento entre secciones es inmediato, sin animación', async ({ page }) => {
     await page.goto('/');
+    await page.locator('#contact').waitFor();
+    await page.evaluate(() => document.fonts.ready);
     expect(
       await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior),
-    ).toBe('smooth');
+    ).toBe('auto');
+    // Un desplazamiento animado produciría varias posiciones intermedias.
+    await page.evaluate(() => {
+      const target = window as unknown as { positions: number[] };
+      target.positions = [];
+      addEventListener('scroll', () => target.positions.push(Math.round(scrollY)));
+    });
     await page
       .getByRole('navigation', { name: 'Navegación principal' })
       .getByRole('link', { name: 'Experiencia', exact: true })
       .click();
     await expectScrolledTo(page, 'experience');
+    const positions = await page.evaluate(
+      () => (window as unknown as { positions: number[] }).positions,
+    );
+    expect(new Set(positions).size).toBe(1);
   });
 });

@@ -36,6 +36,8 @@ export interface PublicationResult {
 export const TIERS: Record<'structural' | 'pdf' | 'dist' | 'meta' | 'content' | 'private', string>;
 export const ALLOWED_PROFILE_URLS: string[];
 export const PUBLIC_PDF_AUTHOR: string;
+export const AUTHORIZED_CV: Readonly<{ distPath: string; sha256: string; emailSha256: string }>;
+export function authorizedEmailFor(bytes: Uint8Array): string | undefined;
 export const ALLOWED_DIST_HOSTS: Set<string>;
 export const REVIEWED_BINARIES: Map<string, string>;
 export const PATTERNS: Record<
@@ -52,7 +54,10 @@ export const PATTERNS: Record<
 >;
 
 export function evaluatePublication(input: PublicationInput): PublicationResult;
-export function findPersonalData(text: string): string[];
+export function findPersonalData(
+  text: string,
+  options?: { allowedEmailSha256?: string | undefined },
+): string[];
 export function pdfIntegrityIssues(pdf: PdfInspection): string[];
 export function isTextPath(path: string): boolean;
 export function runCheck(options?: {

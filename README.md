@@ -1,7 +1,7 @@
 # Portafolio profesional — Michael Roudergue Inostroza
 
 Sitio personal de Ingeniería de Software, Liderazgo Técnico y Ciberseguridad.
-**Estado:** publicado en https://michaelroudergue.vercel.app/ (Fase A). Fase B aprobada para publicación (ver [docs/PLAN_IMPLEMENTACION.md](docs/PLAN_IMPLEMENTACION.md)).
+**Estado:** publicado en https://michaelroudergue.vercel.app/. Fases A y B publicadas; Fase C (barra de accesos directos en móvil, realce de etiquetas de tecnologías, correo solo dentro del CV y desplazamiento inmediato) aprobada para publicación el 2026-11-27 (ver [docs/PLAN_IMPLEMENTACION.md](docs/PLAN_IMPLEMENTACION.md)).
 
 > **Publicación:** el historial del repositorio de desarrollo contiene información que no debe publicarse; este repositorio de desarrollo **no tiene remotos** y el público se actualiza solo con instantáneas saneadas. Seguir [docs/PUBLICACION.md](docs/PUBLICACION.md). Antes de cada instantánea es obligatorio `npm run verify:publication:strict` (el éxito de CI no lo sustituye).
 

@@ -50,7 +50,9 @@ export function Projects() {
                     <ul className="flex flex-wrap gap-2">
                       {project.technologies.map((tech) => (
                         <li key={tech}>
-                          <Badge mono>{tech}</Badge>
+                          <Badge mono tech>
+                            {tech}
+                          </Badge>
                         </li>
                       ))}
                     </ul>

@@ -113,7 +113,7 @@ export function topOf(page: Page, id: string): Promise<number> {
   );
 }
 
-/** Espera a que el desplazamiento (posiblemente suave) llegue a la sección. */
+/** Espera a que el desplazamiento llegue a la sección. */
 export async function expectScrolledTo(page: Page, id: string): Promise<void> {
   await expect(async () => {
     const top = await topOf(page, id);

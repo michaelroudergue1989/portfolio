@@ -80,6 +80,8 @@
 
   /* Layout */
   --header-height: 4rem;
+  /* Espacio que ocupa la barra inferior móvil (58 px de barra, 8 de margen y holgura). */
+  --bottom-nav-space: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   --container-max: 72rem;
 }
 

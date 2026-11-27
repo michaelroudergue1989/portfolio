@@ -17,6 +17,8 @@
     "education": "Education",
     "certifications": "Certifications",
     "resumes": "Résumé",
+    "resumesShort": "Résumé",
+    "bottomLabel": "Shortcuts",
     "contact": "Contact"
   },
   "theme": {

@@ -71,7 +71,9 @@ export function Experience() {
                 <ul className="flex flex-wrap gap-2">
                   {job.technologies.map((tech) => (
                     <li key={tech}>
-                      <Badge mono>{tech}</Badge>
+                      <Badge mono tech>
+                        {tech}
+                      </Badge>
                     </li>
                   ))}
                 </ul>

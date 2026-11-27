@@ -119,3 +119,29 @@ Tokens y tema (F2), esquema de datos y componentes de sección (F3), persistenci
   orden visual del orden de lectura.
 - **Dos listas de navegación sin duplicar datos:** `navItems` (barra horizontal) y `extendedNavItems` (añade
   Currículum; menú móvil y pie). Cada navegación calcula la sección activa sobre sus propios destinos.
+
+## Decisiones de la Fase C
+
+- **Datos:** `bottomNavItems` es un subconjunto de `extendedNavItems`; no hay un segundo sistema de anclas.
+- **Montaje condicional:** `Layout` monta `BottomNav` solo si se cumple `BOTTOM_NAV_QUERY`: de 360 a 767 px de ancho
+  con más de 500 px de alto, o de 320 a 359 px con 550 px o más (en esos anchos el Hero es más alto y la barra taparía
+  «Descargar CV»). En `em`, para responder al tamaño de fuente base.
+- **Sección activa:** `Layout` la calcula una vez para el menú móvil y la barra; no se añaden listeners de scroll.
+- **Menú abierto:** `MobileMenu` avisa a `Layout` y la barra se oculta.
+- **Espacio inferior:** un espaciador (`--bottom-nav-space`) y `scroll-padding-bottom` existen solo con la barra.
+- **Zona segura:** las posiciones usan `env(safe-area-inset-*)`, pero **no** se añadió `viewport-fit=cover`: sin él el
+  navegador ya mantiene la página dentro de la zona segura (esos valores son 0), y activarlo obligaría a gestionar
+  también la cabecera y los laterales en horizontal. No comprobado en un iPhone.
+- **Sin transparencia ni `backdrop-filter`:** fondo opaco, por contraste y coste.
+
+## Etiquetas de tecnologías (2026-11-26)
+
+- `Badge` con `tech`: marca solo tecnologías (en Habilidades, las de los grupos técnicos; no cargos, metodologías ni
+  competencias). El realce está en `base.css`: escala 1,07 y borde primario en 160 ms, únicamente con puntero fino y
+  «hover»; con movimiento reducido no hay escala ni transición.
+- El correo profesional no forma parte de la interfaz: está solo dentro del PDF del CV.
+
+## Desplazamiento inmediato entre secciones (2026-11-26)
+
+Las anclas usan el comportamiento nativo sin `scroll-behavior: smooth`. No reintroducirlo ni simularlo con JavaScript sin
+comprobar `e2e/history.spec.ts`: en Chromium, la animación en curso desincronizaba URL y página al recorrer el historial.

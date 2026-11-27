@@ -10,6 +10,12 @@ import type { Skill, SkillGroupId, SkillLevel } from '@/types/portfolio';
 
 const levels: readonly SkillLevel[] = ['advanced', 'intermediate'];
 const monoGroups: readonly SkillGroupId[] = ['languages', 'databases', 'tooling'];
+/** Tecnologías: las de los grupos técnicos (las principales se reconocen por el mismo id). */
+const technologyIds = new Set(
+  skillGroups
+    .filter((group) => monoGroups.includes(group.id))
+    .flatMap((group) => group.skills.map((skill) => skill.id)),
+);
 
 export function Skills() {
   const { t } = useTranslation();
@@ -39,6 +45,7 @@ export function Skills() {
                   <li key={skill.id}>
                     <Badge
                       variant={level === 'advanced' ? 'primary' : 'neutral'}
+                      tech={technologyIds.has(skill.id)}
                       className="text-sm"
                     >
                       {skillName(skill)}
@@ -62,7 +69,7 @@ export function Skills() {
             <ul className="flex flex-wrap gap-2">
               {group.skills.map((skill) => (
                 <li key={skill.id}>
-                  <Badge mono={monoGroups.includes(group.id)}>
+                  <Badge mono={monoGroups.includes(group.id)} tech={monoGroups.includes(group.id)}>
                     {skillName(skill)}
                     {skill.basis === 'education' ? (
                       <>

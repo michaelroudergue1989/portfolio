@@ -110,3 +110,54 @@ Lighthouse 13.6.0 sobre dos builds locales (original y Fase B definitiva), alter
 
 Las diferencias están dentro de la variación entre ejecuciones: no se atribuye mejora ni empeoramiento. Las cifras no
 son comparables con las de la sección 2 (otro día y condiciones de carga).
+
+## 9. Fase C: comparación antes y después (2026-11-26)
+
+Mismo procedimiento que la sección 8 (3 ejecuciones por perfil; medianas). El perfil móvil muestra la barra.
+
+| Métrica                  | Móvil antes     | Móvil después   | Escritorio antes | Escritorio después |
+| ------------------------ | --------------- | --------------- | ---------------- | ------------------ |
+| Performance              | 99              | 99              | 100              | 100                |
+| Accessibility / BP / SEO | 100 / 100 / 100 | 100 / 100 / 100 | 100 / 100 / 100  | 100 / 100 / 100    |
+| FCP y LCP                | 915 ms          | 914 ms          | 257 ms           | 255 ms             |
+| TBT                      | 129 ms          | 137 ms          | 0 ms             | 0 ms               |
+| CLS                      | 0               | 0               | 0                | 0                  |
+| Peso transferido         | 214,9 kB        | 216,1 kB        | 214,9 kB         | 216,1 kB           |
+
+Build: JavaScript 365,26 → 368,26 kB (gzip 112,54 → 113,55); CSS 27,78 → 28,67 kB (gzip 6,39 → 6,60). Listeners de
+`scroll` y `resize`: sin cambios; uno más de `matchMedia`.
+
+## 10. Etiquetas y retirada del correo (2026-11-26)
+
+Mismo procedimiento (3 ejecuciones por perfil, alternadas; medianas). Antes = versión intermedia con el correo en
+Contacto, recompilada aparte y nunca publicada; después = versión propuesta.
+
+| Métrica                  | Móvil antes     | Móvil después   | Escritorio antes | Escritorio después |
+| ------------------------ | --------------- | --------------- | ---------------- | ------------------ |
+| Performance              | 100             | 100             | 100              | 100                |
+| Accessibility / BP / SEO | 100 / 100 / 100 | 100 / 100 / 100 | 100 / 100 / 100  | 100 / 100 / 100    |
+| FCP y LCP                | 926 ms          | 919 ms          | 382 ms           | 255 ms             |
+| TBT                      | 82 ms           | 88 ms           | 0 ms             | 0 ms               |
+| CLS                      | 0               | 0               | 0                | 0                  |
+| Peso transferido         | 216,1 kB        | 216,4 kB        | 216,1 kB         | 216,4 kB           |
+
+La diferencia de FCP en escritorio no se atribuye al cambio (la medición anterior de la Fase C dio unos 267 ms). Build:
+JavaScript 368,43 kB (gzip 113,61); CSS 30,32 kB (gzip 6,81). Frente a la Fase C sin etiquetas (368,26 y 30,05 kB).
+Las cifras de CSS de la sección 9 se midieron antes de escribir su documentación: el valor real de la Fase C es
+30,05 kB.
+
+## 11. Desplazamiento inmediato (2026-11-26)
+
+Mismo procedimiento (3 ejecuciones por perfil, alternadas; medianas). Antes = con desplazamiento suave.
+
+| Métrica                  | Móvil antes     | Móvil después   | Escritorio antes | Escritorio después |
+| ------------------------ | --------------- | --------------- | ---------------- | ------------------ |
+| Performance              | 99              | 99              | 100              | 100                |
+| Accessibility / BP / SEO | 100 / 100 / 100 | 100 / 100 / 100 | 100 / 100 / 100  | 100 / 100 / 100    |
+| FCP y LCP                | 974 ms          | 924 ms          | 261 ms           | 259 ms             |
+| TBT                      | 144 ms          | 134 ms          | 0 ms             | 0 ms               |
+| CLS                      | 0               | 0               | 0                | 0                  |
+| Peso transferido         | 216,4 kB        | 216,4 kB        | 216,4 kB         | 216,4 kB           |
+
+Las diferencias están dentro de la variación entre ejecuciones. Build: JavaScript 368,43 kB (gzip 113,61); CSS 30,24 kB
+(gzip 6,80).
